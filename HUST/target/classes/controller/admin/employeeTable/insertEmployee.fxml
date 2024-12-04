@@ -81,7 +81,6 @@
                <children>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="86.0" layoutY="95.0" prefHeight="34.0" prefWidth="118.0" text="Label" />
                         <Button layoutX="855.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleReturnButton" prefHeight="42.0" prefWidth="88.0" style="-fx-background-color: #d0f252; -fx-border-color: #000000;" text="Return">
                            <font>
                               <Font size="20.0" />
