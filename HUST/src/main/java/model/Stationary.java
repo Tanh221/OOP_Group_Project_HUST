@@ -1,6 +1,10 @@
 package model;
 
+import java.io.Serial;
+
 public class Stationary extends Product {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String type;
     private String material;
     private int packSize;

@@ -1,6 +1,10 @@
 package model;
 
+import java.io.Serial;
+
 public class Book extends Product {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String author;
     private String publisher;
     private String publishedDate;

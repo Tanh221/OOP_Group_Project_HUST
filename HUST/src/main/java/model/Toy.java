@@ -1,8 +1,11 @@
 package model;
 
+import java.io.Serial;
 import java.util.ArrayList;
 
 public class Toy extends Product{
+    @Serial
+    private static final long serialVersionUID = 1L;
     private int suitableAgeMin;
     private String dimensions;
     private String brand;
