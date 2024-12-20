@@ -1,4 +1,0 @@
-Minh,123,NTAM,a@gmail.com,1
-A,321,NVA,nva@gmail.com,0
-b,321321,NTB,b@gmail.com,0
-0,0,0,0,1
