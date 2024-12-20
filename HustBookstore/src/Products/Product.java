@@ -2,8 +2,9 @@ package Products;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 
-import Users.User;
+import Databases.ProductDB;
 
 public abstract class Product implements Serializable {
     @Serial
@@ -16,11 +17,17 @@ public abstract class Product implements Serializable {
     private double price;
     private String description;
 
-    public Product(String name, double price, String description) {
+    public Product(String name, double price, String description) throws Exception {
+        ProductDB productdb = new ProductDB();
+        ArrayList<Product> allproduct = productdb.getAllProducts();
+        for(Product p : allproduct) {
+            Product.idCounter = Math.max(Product.idCounter, p.getProductID());
+        }
         this.productID = ++Product.idCounter;
         this.name = name != null ? name : "Unknown";
         this.price = price >= 0 ? price : 0.0;
         this.description = description != null ? description : "No description";
+        productdb.add(this);
     }
 
     public String getDetails() {
@@ -32,31 +39,32 @@ public abstract class Product implements Serializable {
     }
 
     public int getProductID() {
-        return productID;
+        return this.productID;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
-
-    public void setName(String name) {
+    public void setName(String name) throws Exception {
         this.name = name;
+        ProductDB productdb = new ProductDB();
+        productdb.update(this);
     }
-
     public double getPrice() {
-        return price;
+        return this.price;
     }
-
-    public void setPrice(double price) {
+    public void setPrice(double price) throws Exception {
         this.price = price;
+        ProductDB productdb = new ProductDB();
+        productdb.update(this);
     }
-
     public String getDescription() {
-        return description;
+        return this.description;
     }
-
-    public void setDescription(String description) {
+    public void setDescription(String description) throws Exception {
         this.description = description;
+        ProductDB productdb = new ProductDB();
+        productdb.update(this);
     }
 
 	@Override
@@ -64,10 +72,11 @@ public abstract class Product implements Serializable {
         if (this == otherobj) return true; // the same reference
         if (otherobj == null || getClass() != otherobj.getClass()) return false; // null or different class
         Product otherproduct = (Product) otherobj; //
-        return this.getProductID() == otherproduct.getProductID() && 
-				this.getName().equals(otherproduct.getName()) && 
-				this.getPrice() == otherproduct.getPrice() && 
-				this.getDescription().equals(otherproduct.getDescription())
-                ;
+        // return this.getProductID() == otherproduct.getProductID() && 
+		// 		this.getName().equals(otherproduct.getName()) && 
+		// 		this.getPrice() == otherproduct.getPrice() && 
+		// 		this.getDescription().equals(otherproduct.getDescription())
+        //         ;
+        return this.getProductID() == otherproduct.getProductID();
     }
 }

@@ -1,6 +1,7 @@
 package Users;
 
 import Store.Store;
+import Databases.UserDB;
 import Products.Product;
 import Products.ProductQuantity;
 
@@ -11,8 +12,10 @@ public class Staff extends User {
     private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_BLUE = "\u001B[34m";
 
-	public Staff(String username, String password) {
+	public Staff(String username, String password) throws Exception {
 		super(username, password, "Staff");
+        UserDB userdb = new UserDB();
+        userdb.update(this);
 		// TODO Auto-generated constructor stub
 	}
     public void addProductToStore(Store s, Product p) throws Exception

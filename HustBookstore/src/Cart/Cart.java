@@ -134,7 +134,9 @@ public class Cart implements Serializable {
         for (ProductQuantity pq : this.itemsInCart) {
             optstr += (pq.getDetails()) + '\n' + '\n';
         }
+        optstr += ("Total cost : " + this.getTotalCost()) + '\n';
         optstr += ("*****************************************************") + '\n';
+        optstr += ("Paid successfully!");
         return optstr;
     }
     public void print() {

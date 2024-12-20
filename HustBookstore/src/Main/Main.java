@@ -52,17 +52,17 @@ public class Main {
 			}
 			else // có tồn tại sản phầm
 			{
-				if(pq1.getQuantity() >= 1) // nếu trong store có đủ tối thiểu 1 cái bút bi
+				if(pq1.getQuantity() >= 40) // nếu trong store có đủ tối thiểu 1 cái bút bi
 				{
 					// add 1 bút bi vào giỏ hàng
-					customer1.addProductToCart(pq1.getProduct());
+					customer1.addProductToCart(pq1.getProduct(), 40);
 				}
 				else
 				{
 					// báo lỗi
 				}
 			}
-			userdb.update(customer1); // update customer1 (to save the cart);
+			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
 	
 			// giả sử thằng customer1 lướt store để mua 3 cái tai nghe 100 củ
 			ProductQuantity pq2 = store.getByProductName("Tai nghe 100 cu");
@@ -93,7 +93,7 @@ public class Main {
 			{
 				// báo lỗi
 			}
-			userdb.update(customer1); // update customer1 (to save the cart);
+			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
 	
 			// mua thêm quyển sách :D
 			ProductQuantity pq3 = store.getByProductName("Harry Potter and BCM");
@@ -104,14 +104,25 @@ public class Main {
 			{
 				if(pq3.getQuantity() >= 1)
 				{
-					customer1.addProductToCart(pq3.getProduct(), 1);
+					customer1.addProductToCart(pq3.getProduct());
 				}
 				else
 				{
 				}
 			}
-			userdb.update(customer1); // update customer1 (to save the cart);
-	
+			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
+
+			// test remove from cart
+			ArrayList<ProductQuantity> itemsInCart = customer1.getCart().getItemsInCart();
+			for(ProductQuantity pq : itemsInCart)
+			{
+				if(pq.getQuantity() > 3)
+				{
+					customer1.removeProductFromCart(pq.getProduct(), 3);
+				}
+			}
+			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
+
 			customer1.getCart().print();
 			store.print(); // quantity của các product chưa bị trừ
 			customer1.pay(store);
@@ -152,5 +163,9 @@ public class Main {
 		staff1.addProductToStore(store, toy1, 2); // thêm 2 toy1 vào store
 		staff1.addProductToStore(store, toy2); // thêm 1 toy2 vào store
 		staff1.addProductToStore(store, toy3, 100); // thêm 100 toy3 vào store
+
+		Staff staff2 = generateStaff("Mai Van Nhat Minh", "Hoc Gioi");
+		Toy toy4 = new Toy("Rong trang mat xanh", 100d, "Sieu khoe", "Yugioh");
+		staff2.addProductToStore(store, toy4, 10);
 	}
 }

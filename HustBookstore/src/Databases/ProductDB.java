@@ -7,19 +7,18 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 import Products.Product;
-import Users.User;
 
 import java.util.Date;
 import java.util.ArrayList;
 
 import exception.DatabaseNotAvailableException;
 
-public class UserDB {
+public class ProductDB {
     private String path;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private boolean avail;
-	private ArrayList<User> db = new ArrayList<User>();
+	private ArrayList<Product> db = new ArrayList<Product>();
     private boolean DEBUG_MODE;
 
     private static final String ANSI_RESET = "\u001B[0m";
@@ -28,15 +27,15 @@ public class UserDB {
     private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_BLUE = "\u001B[34m";
 
-    public UserDB()
+    public ProductDB()
     {
-        this.path = "./userdb.dat";
+        this.path = "./productdb.dat";
         this.avail = false;
         this.DEBUG_MODE = false;
         this.init();
     }
 
-    public UserDB(String path)
+    public ProductDB(String path)
     {
         this.path = path;
         this.avail = false;
@@ -44,15 +43,15 @@ public class UserDB {
         this.init();
     }
 
-    public UserDB(boolean DEBUG_MODE)
+    public ProductDB(boolean DEBUG_MODE)
     {
-        this.path = "./userdb.dat";
+        this.path = "./productdb.dat";
         this.avail = false;
         this.DEBUG_MODE = DEBUG_MODE;
         this.init();
     }
 
-    public UserDB(String path, boolean DEBUG_MODE)
+    public ProductDB(String path, boolean DEBUG_MODE)
     {
         this.path = path;
         this.avail = false;
@@ -60,13 +59,13 @@ public class UserDB {
         this.init();
     }
 
-    public void init() 
+    public void init()
     {
         try {
             File file = new File(this.path);
             if(!file.exists() || !file.isFile())
             {
-                this.db = new ArrayList<User>();
+                this.db = new ArrayList<Product>();
                 this.avail = true;
             }
             else
@@ -75,7 +74,7 @@ public class UserDB {
                 while(fis.available() > 0)
                 {
                     this.ois = new ObjectInputStream(fis);
-                    this.db = (ArrayList<User>)(this.ois.readObject());
+                    this.db = (ArrayList<Product>)(this.ois.readObject());
                 }
                 if(this.ois != null)
                 {
@@ -84,7 +83,7 @@ public class UserDB {
                 }
                 if(this.db == null)
                 {
-                    this.db = new ArrayList<User>();
+                    this.db = new ArrayList<Product>();
                 }
                 this.avail = true;
             }
@@ -114,7 +113,7 @@ public class UserDB {
         return this.path;
     }
 
-    public User add(User obj) throws Exception {
+    public Product add(Product obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -124,7 +123,7 @@ public class UserDB {
         return obj;
     }
 
-    public User set(int indexInDatabase, User obj) throws Exception {
+    public Product set(int indexInDatabase, Product obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -133,7 +132,6 @@ public class UserDB {
         this.save();
         return obj;
     }
-
 
     public boolean remove(int indexInDatabase) throws Exception {
         if(!this.avail)
@@ -153,8 +151,8 @@ public class UserDB {
         }
     }
 
-    public boolean remove(User obj) throws Exception
-    {
+
+    public boolean remove(Product obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -173,7 +171,7 @@ public class UserDB {
         }
     }
 
-    public User update(User obj) throws Exception
+    public Product update(Product obj) throws Exception
     {
         if(!this.avail)
         {
@@ -190,42 +188,38 @@ public class UserDB {
         }
     }
 
-    public int indexOf(User obj) throws Exception {
+    public int indexOf(Product obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         return this.db.indexOf(obj);
     }
-
-    public User getByUsername(String username) throws Exception
-    {
+    public Product getByProductID(int id) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
-        for(User e : this.db) {
-            if(e.getUsername().equals(username)) {
+        for(Product e : this.db) {
+            if(e.getProductID() == id) {
                 return e;
             }
         }
         return null;
     }
-
-    public User getByUsernameAndPassword(String username, String password) throws Exception
-    {
+    public Product getByProductName(String productname) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
-        for(User e : this.db) {
-            if(e.getUsername().equals(username) && e.getPassword().equals(password)) {
+        for(Product e : this.db) {
+            if(e.getName().equals(productname)) {
                 return e;
             }
         }
         return null;
     }
-    public ArrayList<User> getAllUsers() throws Exception {
+    public ArrayList<Product> getAllProducts() throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -258,7 +252,7 @@ public class UserDB {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.oos = new ObjectOutputStream(new FileOutputStream(new File(this.path)));
-        this.oos.writeObject(new HashMap<String, User>());
+        this.oos.writeObject(new HashMap<String, Product>());
         this.oos.close();
         this.db.clear();
         if(this.DEBUG_MODE)
@@ -290,7 +284,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
-        ArrayList<User> data = this.db;
+        ArrayList<Product> data = this.db;
         this.oos = new ObjectOutputStream(new FileOutputStream(new File(path)));
         this.oos.writeObject(data);
         this.oos.close();

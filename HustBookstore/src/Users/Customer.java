@@ -1,6 +1,7 @@
 package Users;
 
 import Cart.Cart;
+import Databases.UserDB;
 import Products.Product;
 import Products.ProductQuantity;
 import Store.Store;
@@ -13,33 +14,43 @@ public class Customer extends User {
     private static final String ANSI_BLUE = "\u001B[34m";
 
 	private Cart cart;
-	public Customer(String username, String password) {
+	public Customer(String username, String password) throws Exception {
 		super(username, password, "Customer");
 		this.cart = new Cart();
+        UserDB userdb = new UserDB();
+        userdb.update(this);
 	}
 
     public Cart getCart() {
         return this.cart;
     }
 
-    public void addProductToCart(Product p) {
+    public void addProductToCart(Product p) throws Exception {
         // add 1 product p to Store s
 		this.cart.addProduct(p);
+        UserDB userdb = new UserDB();
+        userdb.update(this);
     }
 
-    public void removeProductFromCart(Product p) {
+    public void removeProductFromCart(Product p) throws Exception {
         // remove all product p from Store s
 		this.cart.removeProduct(p);
+        UserDB userdb = new UserDB();
+        userdb.update(this);
     }
 
-    public void addProductToCart(Product p, int quantity) {
+    public void addProductToCart(Product p, int quantity) throws Exception {
         // add {quantity} product p to Store s
 		this.cart.addProduct(p, quantity);
+        UserDB userdb = new UserDB();
+        userdb.update(this);
     }
 
-    public void removeProductFromCart(Product p, int quantity) {
+    public void removeProductFromCart(Product p, int quantity) throws Exception {
         // remove {quantity} product p from Store s
 		this.cart.removeProduct(p, quantity);
+        UserDB userdb = new UserDB();
+        userdb.update(this);
     }
 
     public void pay(Store s) throws Exception {
@@ -63,6 +74,8 @@ public class Customer extends User {
                 s.removeProduct(pq.getProduct(), pq.getQuantity());
             }
             this.cart.clear();
+            UserDB userdb = new UserDB();
+            userdb.update(this);
         }
         else
         {

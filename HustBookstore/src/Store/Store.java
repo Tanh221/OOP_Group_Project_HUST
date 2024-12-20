@@ -2,9 +2,7 @@ package Store;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -106,7 +104,7 @@ public class Store {
         }
     }
 
-    public ArrayList<ProductQuantity> getItemsInStore() throws StoreNotAvailableException
+    public ArrayList<ProductQuantity> getItemsInStore() throws Exception
     {
         if(!this.avail)
         {
@@ -115,7 +113,7 @@ public class Store {
         return this.itemsInStore;
     }
 
-    public void addProduct(Product p) throws FileNotFoundException, IOException, ClassNotFoundException, StoreNotAvailableException
+    public void addProduct(Product p) throws Exception
     {
         if(!this.avail)
         {
@@ -140,7 +138,7 @@ public class Store {
         }
     }
 
-    public void removeProduct(Product p) throws FileNotFoundException, IOException, ClassNotFoundException, StoreNotAvailableException
+    public void removeProduct(Product p) throws Exception
     {
         if(!this.avail)
         {
@@ -169,7 +167,7 @@ public class Store {
         }
     }
 
-    public void addProduct(Product p, int quantity) throws FileNotFoundException, IOException, ClassNotFoundException, StoreNotAvailableException
+    public void addProduct(Product p, int quantity) throws Exception
     {
         if(!this.avail)
         {
@@ -194,7 +192,7 @@ public class Store {
         }
     }
 
-    public void removeProduct(Product p, int quantity) throws FileNotFoundException, IOException, ClassNotFoundException, StoreNotAvailableException
+    public void removeProduct(Product p, int quantity) throws Exception
     {
         if(!this.avail)
         {
@@ -222,7 +220,7 @@ public class Store {
             }
         }
     }
-    public int indexOf(Product p) throws StoreNotAvailableException
+    public int indexOf(Product p) throws Exception
     {
         if(!this.avail)
         {
@@ -239,7 +237,7 @@ public class Store {
         }
         return -1;
     }
-    public ProductQuantity getByProduct(Product p) throws StoreNotAvailableException {
+    public ProductQuantity getByProduct(Product p) throws Exception {
         if(!this.avail)
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
@@ -251,7 +249,7 @@ public class Store {
         }
         return null;
     }
-    public ProductQuantity getByProductID(int id) throws StoreNotAvailableException {
+    public ProductQuantity getByProductID(int id) throws Exception {
         if(!this.avail)
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
@@ -263,7 +261,7 @@ public class Store {
         }
         return null;
     }
-    public ProductQuantity getByProductName(String productname) throws StoreNotAvailableException {
+    public ProductQuantity getByProductName(String productname) throws Exception {
         if(!this.avail)
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
@@ -275,7 +273,7 @@ public class Store {
         }
         return null;
     }
-    public boolean isEmpty() throws StoreNotAvailableException
+    public boolean isEmpty() throws Exception
     {
         if(!this.avail)
         {
@@ -283,7 +281,7 @@ public class Store {
         }
         return this.itemsInStore.isEmpty();
     }
-    public int size() throws StoreNotAvailableException
+    public int size() throws Exception
     {
         if(!this.avail)
         {
@@ -291,7 +289,7 @@ public class Store {
         }
         return this.itemsInStore.size();
     }
-    public boolean clear() throws FileNotFoundException, IOException, ClassNotFoundException, StoreNotAvailableException
+    public boolean clear() throws Exception
     {
         if(!this.avail)
         {
@@ -305,7 +303,7 @@ public class Store {
         }
         return true;
     }
-    public boolean save() throws FileNotFoundException, IOException, ClassNotFoundException, StoreNotAvailableException
+    public boolean save() throws Exception
     {
         if(!this.avail)
         {
@@ -320,7 +318,7 @@ public class Store {
         }
         return true;
     }
-    public String getDetails() throws StoreNotAvailableException
+    public String getDetails() throws Exception
     {
         if(!this.avail)
         {
@@ -334,7 +332,7 @@ public class Store {
         optstr += ("******************************************************") + '\n';
         return optstr;
     }
-    public void print() throws StoreNotAvailableException
+    public void print() throws Exception
     {
         if(!this.avail)
         {
