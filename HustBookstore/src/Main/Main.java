@@ -133,14 +133,12 @@ public class Main {
 	private static Staff generateStaff(String username, String password) throws Exception
 	{
 		Staff staff = new Staff(username, password);
-		userdb.add(staff); // tự động lưu staff vào database
 		return staff;
 	}
 
 	private static Customer generateCustomer(String username, String password) throws Exception
 	{
 		Customer customer = new Customer(username, password);
-		userdb.add(customer); // tự động lưu customer vào database
 		return customer;
 	}
 

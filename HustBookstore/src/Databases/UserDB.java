@@ -197,6 +197,19 @@ public class UserDB {
         }
         return this.db.indexOf(obj);
     }
+    public User getByUserID(int id) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
+        }
+        for(User e : this.db) {
+            if(e.getUserID() == id) {
+                return e;
+            }
+        }
+        return null;
+    }
 
     public User getByUsername(String username) throws Exception
     {
