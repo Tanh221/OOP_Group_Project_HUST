@@ -43,12 +43,30 @@ public class Customer extends User {
     }
 
     public void pay(Store s) throws Exception {
-        this.cart.print();
+        Boolean check = true;
+        String errstr = "";
         for(ProductQuantity pq: this.cart.getItemsInCart())
         {
-            s.removeProduct(pq.getProduct(), pq.getQuantity());
+            ProductQuantity spq = s.getByProduct(pq.getProduct());
+            if(spq.getQuantity() < pq.getQuantity())
+            {
+                check = false;
+                errstr += "There are only " + spq.getQuantity() + " [" + spq.getProduct().getName() + "] in the Store" + " " +
+                            "while there are " + pq.getQuantity() + " [" + pq.getProduct().getName() + "] in your cart" + '\n';
+            }
         }
-        this.cart.clear();
-        
+        if(check)
+        {
+            this.cart.print();
+            for(ProductQuantity pq: this.cart.getItemsInCart())
+            {
+                s.removeProduct(pq.getProduct(), pq.getQuantity());
+            }
+            this.cart.clear();
+        }
+        else
+        {
+            System.err.println(ANSI_RED + errstr + ANSI_RESET);
+        }
     }
 }

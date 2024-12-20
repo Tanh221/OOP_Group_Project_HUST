@@ -18,7 +18,7 @@ import Users.Admin;
 import Users.User;
 
 public class Main {
-	private static final Boolean FIRST_RUN = true;
+	private static final Boolean FIRST_RUN = false;
 
 	private static UserDB userdb = new UserDB();
 	private static Store store = new Store();
@@ -83,7 +83,7 @@ public class Main {
 				}
 			}
 	
-			// customer cay quá đành chỉ mua 2 tai nghe
+			// customer1 cay quá đành chỉ mua 2 tai nghe
 			if(pq2.getQuantity() >= 2)
 			{
 				// chạy được vì store có 2 tai nghe
@@ -113,9 +113,9 @@ public class Main {
 			userdb.update(customer1); // update customer1 (to save the cart);
 	
 			customer1.getCart().print();
-			// store.print(); // quantity của các product chưa bị trừ
-			// customer1.pay(store);
-			// store.print(); // quantity đã bị trừ
+			store.print(); // quantity của các product chưa bị trừ
+			customer1.pay(store);
+			store.print(); // quantity đã bị trừ
 		}
 	}
 

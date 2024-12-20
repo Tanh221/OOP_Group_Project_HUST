@@ -32,5 +32,15 @@ public class ProductQuantity implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }    
+    }
+
+	@Override
+    public boolean equals(Object otherobj) {
+        if (this == otherobj) return true; // the same reference
+        if (otherobj == null || getClass() != otherobj.getClass()) return false; // null or different class
+        ProductQuantity otherproductquantity = (ProductQuantity) otherobj; //
+        return this.getProduct().equals(otherproductquantity.getProduct()) && 
+                this.getQuantity() == otherproductquantity.getQuantity()
+                ;
+    }
 }

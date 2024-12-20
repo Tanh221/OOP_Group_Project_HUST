@@ -239,6 +239,18 @@ public class Store {
         }
         return -1;
     }
+    public ProductQuantity getByProduct(Product p) throws StoreNotAvailableException {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        for(ProductQuantity e : this.itemsInStore) {
+            if(e.getProduct().equals(p)) {
+                return e;
+            }
+        }
+        return null;
+    }
     public ProductQuantity getByProductID(int id) throws StoreNotAvailableException {
         if(!this.avail)
         {
@@ -317,7 +329,7 @@ public class Store {
         String optstr = "";
         optstr += ("*********************** STORE ***********************") + '\n';
         for (ProductQuantity pq : this.itemsInStore) {
-            optstr += (pq.getDetails()) + '\n';
+            optstr += (pq.getDetails()) + '\n' + '\n';
         }
         optstr += ("******************************************************") + '\n';
         return optstr;
