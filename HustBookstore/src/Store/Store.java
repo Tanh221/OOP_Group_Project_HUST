@@ -11,6 +11,7 @@ import java.util.Date;
 import Products.Product;
 import Products.ProductQuantity;
 import Products.Toy;
+import exception.DatabaseNotAvailableException;
 import exception.StoreNotAvailableException;
 import Products.Book;
 
@@ -110,6 +111,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         return this.itemsInStore;
     }
 
@@ -119,6 +121,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         // add 1 product p to Store
         int id = this.indexOf(p);
         if(id >= 0)
@@ -144,6 +147,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         // remove all product p from Store
         int id = this.indexOf(p);
         if(id == -1)
@@ -173,6 +177,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         // add {quantity} product p to Store
         int id = this.indexOf(p);
         if(id >= 0)
@@ -198,6 +203,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         // remove {quantity} product p from Store
         int id = this.indexOf(p);
         if(id == -1)
@@ -226,6 +232,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         // index of element in itemsInStore that have .product = p
         // return -1 if not found
         for(int id = 0; id < this.itemsInStore.size(); id++)
@@ -242,6 +249,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         for(ProductQuantity e : this.itemsInStore) {
             if(e.getProduct().equals(p)) {
                 return e;
@@ -254,6 +262,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         for(ProductQuantity e : this.itemsInStore) {
             if(e.getProduct().getProductID() == id) {
                 return e;
@@ -266,6 +275,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         for(ProductQuantity e : this.itemsInStore) {
             if(e.getProduct().getName().equals(productname)) {
                 return e;
@@ -279,6 +289,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         return this.itemsInStore.isEmpty();
     }
     public int size() throws Exception
@@ -287,6 +298,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         return this.itemsInStore.size();
     }
     public boolean clear() throws Exception
@@ -295,11 +307,27 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         this.itemsInStore.clear();
         this.save();
         if(this.DEBUG_MODE)
         {
             System.out.println(ANSI_GREEN + "Successfully cleared database to " + this.path + " at " + ANSI_BLUE + (new Date()).toString() + ANSI_RESET);
+        }
+        return true;
+    }
+    public boolean read() throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
+        }
+        this.ois = new ObjectInputStream(new FileInputStream(new File(this.path)));
+        this.itemsInStore = (ArrayList<ProductQuantity>)(this.ois.readObject());
+        this.ois.close();
+        if(this.DEBUG_MODE)
+        {
+            System.out.println(ANSI_GREEN + "Successfully read data from " + this.path + " at " + ANSI_BLUE + (new Date()).toString() + ANSI_RESET);
         }
         return true;
     }
@@ -324,6 +352,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         String optstr = "";
         optstr += ("*********************** STORE ***********************") + '\n';
         for (ProductQuantity pq : this.itemsInStore) {
@@ -338,6 +367,7 @@ public class Store {
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
+        this.read();
         System.out.println(this.getDetails());
     }
 }

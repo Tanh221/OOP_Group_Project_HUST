@@ -6,7 +6,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
-import Products.Product;
 import Users.User;
 
 import java.util.Date;
@@ -111,6 +110,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.path;
     }
 
@@ -119,6 +119,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         this.db.add(obj);
         this.save();
         return obj;
@@ -129,6 +130,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         this.db.set(indexInDatabase, obj);
         this.save();
         return obj;
@@ -140,6 +142,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         if(indexInDatabase <= 0 || indexInDatabase >= this.size())
         {
             System.err.println(ANSI_RED + "Index " + indexInDatabase + " out of bounds for length " + this.size() + "." + ANSI_RESET);
@@ -159,6 +162,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         int id = this.indexOf(obj);
         if(id <= 0 || id >= this.size())
         {
@@ -179,8 +183,9 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         int index = this.indexOf(obj);
-        if(index <= 0 || index >= this.size())
+        if(index < 0 || index >= this.size())
         {
             return this.add(obj);
         }
@@ -195,6 +200,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.db.indexOf(obj);
     }
     public User getByUserID(int id) throws Exception
@@ -203,6 +209,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         for(User e : this.db) {
             if(e.getUserID() == id) {
                 return e;
@@ -217,6 +224,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         for(User e : this.db) {
             if(e.getUsername().equals(username)) {
                 return e;
@@ -231,6 +239,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         for(User e : this.db) {
             if(e.getUsername().equals(username) && e.getPassword().equals(password)) {
                 return e;
@@ -243,6 +252,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.db;
     }
 
@@ -252,6 +262,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.db.isEmpty();
     }
     
@@ -261,6 +272,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.db.size();
     }
 
@@ -270,17 +282,31 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
-        this.oos = new ObjectOutputStream(new FileOutputStream(new File(this.path)));
-        this.oos.writeObject(new HashMap<String, User>());
-        this.oos.close();
+        this.read();
         this.db.clear();
+        this.save();
         if(this.DEBUG_MODE)
         {
             System.out.println(ANSI_GREEN + "Successfully cleared database to " + this.path + " at " + ANSI_BLUE + (new Date()).toString() + ANSI_RESET);
         }
         return true;
     }
-
+    public boolean read() throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
+        }
+        this.ois = new ObjectInputStream(new FileInputStream(new File(this.path)));
+        this.db = (ArrayList<User>)(this.ois.readObject());
+        this.ois.close();
+        if(this.DEBUG_MODE)
+        {
+            System.out.println(ANSI_GREEN + "Successfully read data from " + this.path + " at " + ANSI_BLUE + (new Date()).toString() + ANSI_RESET);
+        }
+        return true;
+    }
+    
     public boolean save() throws Exception
     {
         if(!this.avail)
@@ -303,6 +329,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         ArrayList<User> data = this.db;
         this.oos = new ObjectOutputStream(new FileOutputStream(new File(path)));
         this.oos.writeObject(data);
@@ -322,6 +349,7 @@ public class UserDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         if(doBackup)
         {
             String backupPath;

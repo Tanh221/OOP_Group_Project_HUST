@@ -27,7 +27,7 @@ public abstract class Product implements Serializable {
         this.name = name != null ? name : "Unknown";
         this.price = price >= 0 ? price : 0.0;
         this.description = description != null ? description : "No description";
-        productdb.add(this);
+        productdb.update(this);
     }
 
     public String getDetails() {

@@ -31,7 +31,7 @@ public abstract class User implements Serializable {
 		this.username = username;
 		this.password = password;
 		this.role = role;
-		userdb.add(this);
+		userdb.update(this);
 	}
     public int getUserID() {
         return this.userID;

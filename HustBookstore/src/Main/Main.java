@@ -147,7 +147,7 @@ public class Main {
 		Staff staff1 = generateStaff("Pham Duc Duy", "Hoc Dot");
 		Customer customer1 = generateCustomer("Bui Cong Minh", "Em Fan Anh 7");
 		Customer customer2 = generateCustomer("Binh Cong Mui", "Em Fan Anh 10");
-		
+
 		Book book1 = new Book("Harry Potter and BCM", 1.0d, "The Adventure of Harry Potter and BCM", "BCM", 5);
 		Book book2 = new Book("Harry Potter and PDD", 100.0d, "The Adventure of Harry Potter and PDD", "PDD", 200);
 		

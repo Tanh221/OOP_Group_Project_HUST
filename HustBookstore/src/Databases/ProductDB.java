@@ -110,6 +110,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.path;
     }
 
@@ -118,6 +119,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         this.db.add(obj);
         this.save();
         return obj;
@@ -128,6 +130,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         this.db.set(indexInDatabase, obj);
         this.save();
         return obj;
@@ -138,6 +141,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         if(indexInDatabase <= 0 || indexInDatabase >= this.size())
         {
             System.err.println(ANSI_RED + "Index " + indexInDatabase + " out of bounds for length " + this.size() + "." + ANSI_RESET);
@@ -157,6 +161,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         int id = this.indexOf(obj);
         if(id <= 0 || id >= this.size())
         {
@@ -177,8 +182,9 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         int index = this.indexOf(obj);
-        if(index <= 0 || index >= this.size())
+        if(index < 0 || index >= this.size())
         {
             return this.add(obj);
         }
@@ -193,6 +199,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.db.indexOf(obj);
     }
     public Product getByProductID(int id) throws Exception {
@@ -200,6 +207,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         for(Product e : this.db) {
             if(e.getProductID() == id) {
                 return e;
@@ -212,6 +220,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         for(Product e : this.db) {
             if(e.getName().equals(productname)) {
                 return e;
@@ -224,6 +233,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.db;
     }
 
@@ -233,6 +243,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.db.isEmpty();
     }
     
@@ -242,6 +253,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         return this.db.size();
     }
 
@@ -251,6 +263,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         this.oos = new ObjectOutputStream(new FileOutputStream(new File(this.path)));
         this.oos.writeObject(new HashMap<String, Product>());
         this.oos.close();
@@ -261,7 +274,21 @@ public class ProductDB {
         }
         return true;
     }
-
+    public boolean read() throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
+        }
+        this.ois = new ObjectInputStream(new FileInputStream(new File(this.path)));
+        this.db = (ArrayList<Product>)(this.ois.readObject());
+        this.ois.close();
+        if(this.DEBUG_MODE)
+        {
+            System.out.println(ANSI_GREEN + "Successfully read data from " + this.path + " at " + ANSI_BLUE + (new Date()).toString() + ANSI_RESET);
+        }
+        return true;
+    }
     public boolean save() throws Exception
     {
         if(!this.avail)
@@ -284,6 +311,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         ArrayList<Product> data = this.db;
         this.oos = new ObjectOutputStream(new FileOutputStream(new File(path)));
         this.oos.writeObject(data);
@@ -303,6 +331,7 @@ public class ProductDB {
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
+        this.read();
         if(doBackup)
         {
             String backupPath;
