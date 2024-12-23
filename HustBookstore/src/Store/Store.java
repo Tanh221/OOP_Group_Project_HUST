@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import Products.Product;
-import Products.ProductQuantity;
+import Products.ProductInfo;
 import Products.Toy;
 import exception.DatabaseNotAvailableException;
 import exception.StoreNotAvailableException;
@@ -20,7 +20,7 @@ public class Store {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private boolean avail;
-    private ArrayList<ProductQuantity> itemsInStore = new ArrayList<ProductQuantity>();
+    private ArrayList<ProductInfo> itemsInStore = new ArrayList<ProductInfo>();
     private boolean DEBUG_MODE;
 
     private static final String ANSI_RESET = "\u001B[0m";
@@ -66,7 +66,7 @@ public class Store {
             File file = new File(this.path);
             if(!file.exists() || !file.isFile())
             {
-                this.itemsInStore = new ArrayList<ProductQuantity>();
+                this.itemsInStore = new ArrayList<ProductInfo>();
                 this.avail = true;
             }
             else
@@ -75,7 +75,7 @@ public class Store {
                 while(fis.available() > 0)
                 {
                     this.ois = new ObjectInputStream(fis);
-                    this.itemsInStore = (ArrayList<ProductQuantity>)(this.ois.readObject());
+                    this.itemsInStore = (ArrayList<ProductInfo>)(this.ois.readObject());
                 }
                 if(this.ois != null)
                 {
@@ -84,7 +84,7 @@ public class Store {
                 }
                 if(this.itemsInStore == null)
                 {
-                    this.itemsInStore = new ArrayList<ProductQuantity>();
+                    this.itemsInStore = new ArrayList<ProductInfo>();
                 }
                 this.avail = true;
             }
@@ -105,7 +105,7 @@ public class Store {
         }
     }
 
-    public ArrayList<ProductQuantity> getItemsInStore() throws Exception
+    public ArrayList<ProductInfo> getItemsInStore() throws Exception
     {
         if(!this.avail)
         {
@@ -126,7 +126,7 @@ public class Store {
         int id = this.indexOf(p);
         if(id >= 0)
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             pq.setQuantity(pq.getQuantity() + 1);
             this.itemsInStore.set(id, pq);
             this.save();
@@ -134,7 +134,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = new ProductQuantity(p, 1);
+            ProductInfo pq = new ProductInfo(p, 1);
             this.itemsInStore.add(pq);
             this.save();
             System.out.println("Successfully added 1 [" + p.getClass() + "] " + p.getName() + " to the Store!");
@@ -156,7 +156,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             if(1 > pq.getQuantity())
             {
                 System.err.println("There are only " + pq.getQuantity() + " [" + p.getClass() + "] " + p.getName() + " in the Store!");
@@ -182,7 +182,7 @@ public class Store {
         int id = this.indexOf(p);
         if(id >= 0)
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             pq.setQuantity(pq.getQuantity() + quantity);
             this.itemsInStore.set(id, pq);
             this.save();
@@ -190,7 +190,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = new ProductQuantity(p, quantity);
+            ProductInfo pq = new ProductInfo(p, quantity);
             this.itemsInStore.add(pq);
             this.save();
             System.out.println("Successfully added " + quantity + " [" + p.getClass() + "] " + p.getName() + " to the Store!");
@@ -212,7 +212,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             if(quantity > pq.getQuantity())
             {
                 System.err.println("There are only " + pq.getQuantity() + " [" + p.getClass() + "] " + p.getName() + " in the Store!");
@@ -241,7 +241,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             String OldName = pq.getProduct().getName();
             pq.getProduct().setName(newName);
             this.itemsInStore.set(id, pq);
@@ -264,7 +264,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             double OldPrice = pq.getProduct().getPrice();
             pq.getProduct().setPrice(newPrice);
             this.itemsInStore.set(id, pq);
@@ -287,7 +287,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             String oldDescription = pq.getProduct().getDescription();
             pq.getProduct().setDescription(newDescription);
             this.itemsInStore.set(id, pq);
@@ -310,7 +310,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             int oldQuantity = pq.getQuantity();
             pq.setQuantity(newQuantity);
             this.itemsInStore.set(id, pq);
@@ -333,7 +333,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             String oldAuthor = ((Book)(pq.getProduct())).getAuthor();
             ((Book)(pq.getProduct())).setAuthor(newAuthor);
             this.itemsInStore.set(id, pq);
@@ -356,7 +356,7 @@ public class Store {
         }
         else
         {
-            ProductQuantity pq = this.itemsInStore.get(id);
+            ProductInfo pq = this.itemsInStore.get(id);
             String oldBrand = ((Toy)(pq.getProduct())).getBrand();
             ((Toy)(pq.getProduct())).setBrand(newBrand);
             this.itemsInStore.set(id, pq);
@@ -382,39 +382,39 @@ public class Store {
         }
         return -1;
     }
-    public ProductQuantity getByProduct(Product p) throws Exception {
+    public ProductInfo getByProduct(Product p) throws Exception {
         if(!this.avail)
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
         this.read();
-        for(ProductQuantity e : this.itemsInStore) {
+        for(ProductInfo e : this.itemsInStore) {
             if(e.getProduct().equals(p)) {
                 return e;
             }
         }
         return null;
     }
-    public ProductQuantity getByProductID(int id) throws Exception {
+    public ProductInfo getByProductID(int id) throws Exception {
         if(!this.avail)
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
         this.read();
-        for(ProductQuantity e : this.itemsInStore) {
+        for(ProductInfo e : this.itemsInStore) {
             if(e.getProduct().getProductID() == id) {
                 return e;
             }
         }
         return null;
     }
-    public ProductQuantity getByProductName(String productname) throws Exception {
+    public ProductInfo getByProductName(String productname) throws Exception {
         if(!this.avail)
         {
             throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
         }
         this.read();
-        for(ProductQuantity e : this.itemsInStore) {
+        for(ProductInfo e : this.itemsInStore) {
             if(e.getProduct().getName().equals(productname)) {
                 return e;
             }
@@ -461,7 +461,7 @@ public class Store {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.ois = new ObjectInputStream(new FileInputStream(new File(this.path)));
-        this.itemsInStore = (ArrayList<ProductQuantity>)(this.ois.readObject());
+        this.itemsInStore = (ArrayList<ProductInfo>)(this.ois.readObject());
         this.ois.close();
         if(this.DEBUG_MODE)
         {
@@ -493,7 +493,7 @@ public class Store {
         this.read();
         String optstr = "";
         optstr += ("*********************** STORE ***********************") + '\n';
-        for (ProductQuantity pq : this.itemsInStore) {
+        for (ProductInfo pq : this.itemsInStore) {
             optstr += (pq.getDetails()) + '\n' + '\n';
         }
         optstr += ("******************************************************") + '\n';

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Products.Product;
-import Products.ProductQuantity;
+import Products.ProductInfo;
 import Products.Toy;
 import Products.Book;
 import Store.Store;
@@ -13,10 +13,10 @@ import Store.Store;
 public class Cart implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-    private ArrayList<ProductQuantity> itemsInCart = new ArrayList<ProductQuantity>();
+    private ArrayList<ProductInfo> itemsInCart = new ArrayList<ProductInfo>();
     private double totalCost = 0;
     
-    public ArrayList<ProductQuantity> getItemsInCart() {
+    public ArrayList<ProductInfo> getItemsInCart() {
         return this.itemsInCart;
     }
 
@@ -29,7 +29,7 @@ public class Cart implements Serializable {
         int id = this.indexOf(p);
         if(id >= 0)
         {
-            ProductQuantity pq = this.itemsInCart.get(id);
+            ProductInfo pq = this.itemsInCart.get(id);
             pq.setQuantity(pq.getQuantity() + 1);
             this.itemsInCart.set(id, pq);
             this.totalCost += p.getPrice();
@@ -37,7 +37,7 @@ public class Cart implements Serializable {
         }
         else
         {
-            ProductQuantity pq = new ProductQuantity(p, 1);
+            ProductInfo pq = new ProductInfo(p, 1);
             this.itemsInCart.add(pq);
             this.totalCost += p.getPrice();
             System.out.println("Successfully added 1 [" + p.getClass() + "] " + p.getName() + " to the Cart!");
@@ -53,7 +53,7 @@ public class Cart implements Serializable {
         }
         else
         {
-            ProductQuantity pq = this.itemsInCart.get(id);
+            ProductInfo pq = this.itemsInCart.get(id);
             if(1 > pq.getQuantity())
             {
                 System.err.println("There are only " + pq.getQuantity() + " [" + p.getClass() + "] " + p.getName() + " in the Cart!");
@@ -73,7 +73,7 @@ public class Cart implements Serializable {
         int id = this.indexOf(p);
         if(id >= 0)
         {
-            ProductQuantity pq = this.itemsInCart.get(id);
+            ProductInfo pq = this.itemsInCart.get(id);
             pq.setQuantity(pq.getQuantity() + quantity);
             this.itemsInCart.set(id, pq);
             this.totalCost += p.getPrice() * quantity;
@@ -81,7 +81,7 @@ public class Cart implements Serializable {
         }
         else
         {
-            ProductQuantity pq = new ProductQuantity(p, quantity);
+            ProductInfo pq = new ProductInfo(p, quantity);
             this.itemsInCart.add(pq);
             this.totalCost += p.getPrice() * quantity;
             System.out.println("Successfully added " + quantity + " [" + p.getClass() + "] " + p.getName() + " to the Cart!");
@@ -97,7 +97,7 @@ public class Cart implements Serializable {
         }
         else
         {
-            ProductQuantity pq = this.itemsInCart.get(id);
+            ProductInfo pq = this.itemsInCart.get(id);
             if(quantity > pq.getQuantity())
             {
                 System.err.println("There are only " + pq.getQuantity() + " [" + p.getClass() + "] " + p.getName() + " in the Cart!");
@@ -126,7 +126,7 @@ public class Cart implements Serializable {
     }
 
     public void syncWithStore(Store s) throws Exception {
-        for(ProductQuantity pq : this.itemsInCart)
+        for(ProductInfo pq : this.itemsInCart)
         {
             pq.setProduct((s.getByProduct(pq.getProduct())).getProduct());
         }
@@ -139,7 +139,7 @@ public class Cart implements Serializable {
     public String getDetails() {
         String optstr = "";
         optstr += ("*********************** CART ***********************") + '\n';
-        for (ProductQuantity pq : this.itemsInCart) {
+        for (ProductInfo pq : this.itemsInCart) {
             optstr += (pq.getDetails()) + '\n' + '\n';
         }
         optstr += ("Total cost : " + this.getTotalCost()) + '\n';

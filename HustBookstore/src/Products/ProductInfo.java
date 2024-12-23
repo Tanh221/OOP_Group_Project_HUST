@@ -2,13 +2,13 @@ package Products;
 
 import java.io.Serializable;
 
-public class ProductQuantity implements Serializable {
+public class ProductInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private Product product;
     private int quantity;
 
-    public ProductQuantity(Product product, int quantity) {
+    public ProductInfo(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
     }
@@ -38,7 +38,7 @@ public class ProductQuantity implements Serializable {
     public boolean equals(Object otherobj) {
         if (this == otherobj) return true; // the same reference
         if (otherobj == null || getClass() != otherobj.getClass()) return false; // null or different class
-        ProductQuantity otherproductquantity = (ProductQuantity) otherobj; //
+        ProductInfo otherproductquantity = (ProductInfo) otherobj; //
         return this.getProduct().equals(otherproductquantity.getProduct()) && 
                 this.getQuantity() == otherproductquantity.getQuantity()
                 ;

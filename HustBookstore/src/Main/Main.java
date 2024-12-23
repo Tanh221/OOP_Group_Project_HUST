@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import Products.Product;
 import Products.Book;
 import Products.Toy;
-import Products.ProductQuantity;
+import Products.ProductInfo;
 import Users.Customer;
 import Users.Staff;
 import Users.Admin;
@@ -45,7 +45,7 @@ public class Main {
 			Customer customer1 = (Customer) user2;
 	
 			// giả sử thằng customer1 lướt store để mua 1 bút bi
-			ProductQuantity pq1 = store.getByProductName("But bi");
+			ProductInfo pq1 = store.getByProductName("But bi");
 			if(pq1 == null) // nếu ko tồn tại sản phẩm
 			{
 				// làm gì đó ở đây :D
@@ -65,7 +65,7 @@ public class Main {
 			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
 	
 			// giả sử thằng customer1 lướt store để mua 3 cái tai nghe 100 củ
-			ProductQuantity pq2 = store.getByProductName("Tai nghe 100 cu");
+			ProductInfo pq2 = store.getByProductName("Tai nghe 100 cu");
 			if(pq2 == null) // nếu ko tồn tại sản phẩm
 			{
 				// làm gì đó ở đây :D
@@ -96,7 +96,7 @@ public class Main {
 			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
 	
 			// mua thêm quyển sách :D
-			ProductQuantity pq3 = store.getByProductName("Harry Potter and BCM");
+			ProductInfo pq3 = store.getByProductName("Harry Potter and BCM");
 			if(pq3 == null)
 			{
 			}
@@ -113,8 +113,8 @@ public class Main {
 			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
 
 			// test remove from cart
-			ArrayList<ProductQuantity> itemsInCart = customer1.getCart().getItemsInCart();
-			for(ProductQuantity pq : itemsInCart)
+			ArrayList<ProductInfo> itemsInCart = customer1.getCart().getItemsInCart();
+			for(ProductInfo pq : itemsInCart)
 			{
 				if(pq.getQuantity() > 3)
 				{

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import Databases.OrderDB;
 import Databases.UserDB;
 import Products.Product;
-import Products.ProductQuantity;
+import Products.ProductInfo;
 import Products.Book;
 import Products.Toy;
 

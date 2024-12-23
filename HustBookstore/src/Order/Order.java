@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import Cart.Cart;
 import Products.Product;
-import Products.ProductQuantity;
+import Products.ProductInfo;
 import Users.User;
 
 import Databases.OrderDB;
@@ -61,7 +61,7 @@ public class Order implements Serializable {
         optstr += "Order ID : " + this.getOrderID() + '\n';
 		optstr += ANSI_BLUE + "Customer: "+ this.getUser().getUsername() + ANSI_RESET + "\n";
 		optstr += "Date ordered: " + orderDate + "\n"; 
-        for (ProductQuantity pq : this.getCart().getItemsInCart()) {
+        for (ProductInfo pq : this.getCart().getItemsInCart()) {
             optstr += (pq.getDetails()) + '\n' + '\n';
         }
         optstr += ("Total cost : " + this.getTotalCost()) + '\n';

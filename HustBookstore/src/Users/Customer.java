@@ -6,7 +6,7 @@ import Cart.Cart;
 import Databases.OrderDB;
 import Databases.UserDB;
 import Products.Product;
-import Products.ProductQuantity;
+import Products.ProductInfo;
 import Store.Store;
 import Order.Order;
 
@@ -82,9 +82,9 @@ public class Customer extends User {
         this.syncCartWithStore();
         Boolean check = true;
         String errstr = "";
-        for(ProductQuantity pq: this.cart.getItemsInCart())
+        for(ProductInfo pq: this.cart.getItemsInCart())
         {
-            ProductQuantity spq = s.getByProduct(pq.getProduct());
+            ProductInfo spq = s.getByProduct(pq.getProduct());
             if(spq.getQuantity() < pq.getQuantity())
             {
                 check = false;
@@ -96,7 +96,7 @@ public class Customer extends User {
         {
             Order order = new Order(this, this.getCart());
             order.print();
-            for(ProductQuantity pq: this.cart.getItemsInCart())
+            for(ProductInfo pq: this.cart.getItemsInCart())
             {
                 s.removeProduct(pq.getProduct(), pq.getQuantity());
             }
