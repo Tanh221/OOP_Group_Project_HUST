@@ -11,11 +11,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -66,7 +64,6 @@ public class employee implements Initializable {
                 e = (model.employee) ois.readObject();
                 employeeObservableList.add(e);
             }
-            System.out.println("Loaded employees: " + employeeObservableList.size()); // Debug line
 
         } catch (EOFException ex) {
             System.out.println("Finished loading employees.");
@@ -107,7 +104,56 @@ public class employee implements Initializable {
 
         // Set the final sorted and filtered list as the data source for the TableView
         table.setItems(employeeSortedList);
+
+        editData();
     }
+
+    private void editData(){
+        name.setCellFactory(TextFieldTableCell.<model.employee>forTableColumn());
+        name.setOnEditCommit(e ->{
+            model.employee person = e.getTableView().getItems().get(e.getTablePosition().getRow());
+            person.setName(e.getNewValue());
+
+        });
+    }
+
+    @FXML
+    private void handleRemoveButton(ActionEvent event){
+//        TableView.TableViewSelectionModel<model.employee> selectionModel = table.getSelectionModel();
+//        ObservableList<Integer> list = selectionModel.getSelectedIndices();
+//        Integer[] selectedIndices = new Integer[list.size()];
+//        selectedIndices = list.toArray(selectedIndices);
+//
+//        Arrays.sort(selectedIndices);
+//
+//        for (int i = selectedIndices.length - 1; i >= 0; i--){
+//            selectionModel.clearAndSelect(selectedIndices[i].intValue());
+//            table.getItems().remove(selectedIndices[i].intValue());
+//        }
+//        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        TableView.TableViewSelectionModel<model.employee> selectionModel = table.getSelectionModel();
+        ObservableList<model.employee> selectedItems = selectionModel.getSelectedItems();
+
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Deletion");
+        confirmationAlert.setHeaderText("Are you sure you want to delete the selected employee?");
+
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // Remove the selected items from the original employeeObservableList
+                employeeObservableList.removeAll(selectedItems);
+
+                // Clear the selection
+                selectionModel.clearSelection();
+            }
+        });
+
+
+
+
+    }
+
 
     public void handleDashboardButton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/dashboard.fxml"));
@@ -128,7 +174,7 @@ public class employee implements Initializable {
     }
 
     public void handleStorageButton(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storage.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storageTable/storage.fxml"));
         Parent root = fxmlLoader.load();
         dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -162,4 +208,5 @@ public class employee implements Initializable {
         dialogStage.setScene(scene);
         dialogStage.show();
     }
+
 }

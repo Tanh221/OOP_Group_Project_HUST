@@ -81,7 +81,12 @@
                <children>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button layoutX="855.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleReturnButton" prefHeight="42.0" prefWidth="88.0" style="-fx-background-color: #d0f252; -fx-border-color: #000000;" text="Return">
+                        <Button layoutX="842.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleReturnButton" prefHeight="42.0" prefWidth="101.0" style="-fx-background-color: #d0f252; -fx-border-color: #000000;" text="Return">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="721.0" layoutY="22.0" maxWidth="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleInsertButton" prefHeight="42.0" prefWidth="102.0" style="-fx-background-color: #00FF00; -fx-border-color: #000000;" text="Insert">
                            <font>
                               <Font size="20.0" />
                            </font>

@@ -25,7 +25,7 @@ public class order {
     }
 
     public void handleStorageButton(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storage.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storageTable/storage.fxml"));
         Parent root = fxmlLoader.load();
         dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);

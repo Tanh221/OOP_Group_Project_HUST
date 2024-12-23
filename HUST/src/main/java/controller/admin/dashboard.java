@@ -8,23 +8,24 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class dashboard{
+public class dashboard {
     @FXML
     public AnchorPane dashHead;
     @FXML
     public Button employeeButton;
+    @FXML
+    private Label name;
 
+    public String holder;
     Stage dialogStage = new Stage();
     Scene scene;
 
-    public void username(ActionEvent event){
-
-    }
 
     public void handleEmployeeButton(ActionEvent event) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/employeeTable/employee.fxml"));
@@ -36,7 +37,7 @@ public class dashboard{
     }
 
     public void handleStorageButton(ActionEvent event) throws IOException{
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storage.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storageTable/storage.fxml"));
         Parent root = fxmlLoader.load();
         dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -71,6 +72,15 @@ public class dashboard{
         dialogStage.show();
     }
 
+    public void sendName(String name) {
+        holder = name;
+        if (this.name != null) { // Ensure the FXML Label is initialized
+            this.name.setText("Hello " + holder + "!");
+        }
+    }
 
-
+//    @Override
+//    public void initialize(URL url, ResourceBundle resourceBundle) {
+//        name.setText("Hello "+holder+"!");
+//    }
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import app.utils.HelperMethods;
+import controller.admin.dashboard;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,13 +42,30 @@ public class Login {
                 String[] data;
                 while ((line = reader.readLine()) != null) {
                     data = line.split(",");
-                    if(username.equals(data[0]) && password.equals(data[1]) && data[4].equals("1")){
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/dashboard.fxml"));
-                        Parent root = fxmlLoader.load();
-                        dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                        scene = new Scene(root);
-                        dialogStage.setScene(scene);
-                        dialogStage.show();
+                    if(username.equals(data[0]) && password.equals(data[1])){
+                        String name = data[0];
+                        if (data[4].equals("1")){
+
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/dashboard.fxml"));
+                            Parent root = fxmlLoader.load();
+
+                            dashboard controller = fxmlLoader.getController();
+                            controller.sendName(name);
+
+                            dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                            scene = new Scene(root);
+                            dialogStage.setScene(scene);
+                            dialogStage.show();
+
+                        }
+                        else {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/user/Dashboard.fxml"));
+                            Parent root = fxmlLoader.load();
+                            dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                            scene = new Scene(root);
+                            dialogStage.setScene(scene);
+                            dialogStage.show();
+                        }
                     }
 
                 }
@@ -67,6 +85,16 @@ public class Login {
         dialogStage.setScene(scene);
         dialogStage.show();
     }
+
+    public void handleGuestButton(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/user/Dashboard.fxml"));
+        Parent root = fxmlLoader.load();
+        dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        dialogStage.setScene(scene);
+        dialogStage.show();
+    }
+
 }
 
 
