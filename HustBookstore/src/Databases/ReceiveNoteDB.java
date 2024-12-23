@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import ReceiveNote.ReceiveNote;
 import Users.User;
+import Products.Product;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -256,6 +257,21 @@ public class ReceiveNoteDB {
         ArrayList<ReceiveNote> res = new ArrayList<ReceiveNote>();
         for(ReceiveNote e : this.db) {
             if(e.getUser().getUserID() == userid) {
+                res.add(e);
+            }
+        }
+        return res;
+    }
+
+    public ArrayList<ReceiveNote> getByProduct(Product p) throws Exception {
+        if(!this.avail)
+        {
+            throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
+        }
+        this.read();
+        ArrayList<ReceiveNote> res = new ArrayList<ReceiveNote>();
+        for(ReceiveNote e : this.db) {
+            if(e.getReceiveProductInfo().getProduct().equals(p)) {
                 res.add(e);
             }
         }

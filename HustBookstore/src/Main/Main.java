@@ -136,6 +136,12 @@ public class Main {
 			customer1.getCart().print(); // tên quyển sách trong cart cũng sync theo
 			System.out.println(o.getDetails()); // order cũng ko thay đổi thông tin
 			staff1.printAllMyReceiveNotes();
+			staff1.printAllReceiveNotesOfProduct(pq3.getProduct()); // in tất cả đơn nhập quyển sách ["Harry Potter and BCM"]
+			
+			User user3 = userdb.getByUsernameAndPassword("Mai Van Nhat Minh", "Hoc Gioi");
+			Staff staff3 = (Staff) user3;
+			
+			staff1.printUserReceiveNoteByProduct(staff3, pq3.getProduct()); // in tất cả đơn nhập quyển sách ["Harry Potter and BCM"] được nhập bởi staff 3
 		}
 	}
 
@@ -161,6 +167,7 @@ public class Main {
 		Book book2 = new Book("Harry Potter and PDD", 100.0d, "The Adventure of Harry Potter and PDD", "PDD", 200);
 		
 		staff1.addProductToStore(book1, 10, 4.0); // thêm 10 cuốn sách book1 vào store với giá nhập là 4.0
+		staff1.addProductToStore(book1, 20, 6.0); // tiếp tục thêm 20 cuốn sách book1 vào store với giá nhập là 6.0
 		staff1.addProductToStore(book2, 20, 5.0); // thêm 20 cuốn sách book2 vào store với giá nhập là 5.0
 		
 		Toy toy1 = new Toy("Tai nghe 100 cu", 100000000d, "Tai nghe nghe sieu hay", "Handmade");

@@ -86,7 +86,7 @@ public class Staff extends User {
 
     public void printAllOrdersOfUser(User u) throws Exception
     {
-        System.out.println("*********************** Orders of " + "[" + u.getUserID() + "] " + u.getUsername() + " ***********************");
+        System.out.println("*********************** Orders of User " + "[" + u.getUserID() + "] " + u.getUsername() + " ***********************");
         ArrayList<Order> ordersofuser = this.getAllOrdersOfUser(u);
         for(Order o : ordersofuser)
         {
@@ -147,7 +147,7 @@ public class Staff extends User {
 
     public void printAllReceiveNotesOfUser(User u) throws Exception
     {
-        System.out.println("*********************** Receive Notes of " + "[" + u.getUserID() + "] " + u.getUsername() + " ***********************");
+        System.out.println("*********************** Receive Notes of User " + "[" + u.getUserID() + "] " + u.getUsername() + " ***********************");
         ArrayList<ReceiveNote> receivenotesofuser = this.getAllReceiveNotesOfUser(u);
         for(ReceiveNote rn : receivenotesofuser)
         {
@@ -218,5 +218,48 @@ public class Staff extends User {
     public void printMyReceiveNoteByID(int receiveNoteID) throws Exception
     {
         this.printUserReceiveNoteByID(this, receiveNoteID);
+    }
+
+    public ArrayList<ReceiveNote> getAllReceiveNotesOfProduct(Product p) throws Exception
+    {
+        ReceiveNoteDB receivenotedb = new ReceiveNoteDB();
+        return receivenotedb.getByProduct(p);
+    }
+
+    public void printAllReceiveNotesOfProduct(Product p) throws Exception
+    {
+        System.out.println("*********************** Receive Notes of Product " + "[" + p.getProductID() + "] " + p.getName() + " ***********************");
+        ArrayList<ReceiveNote> receivenotesofproduct = this.getAllReceiveNotesOfProduct(p);
+        for(ReceiveNote rn : receivenotesofproduct)
+        {
+            rn.print();
+        }
+        System.out.println("***********************************************************");
+    }
+
+    public ArrayList<ReceiveNote> getUserReceiveNoteByProduct(User u, Product p) throws Exception
+    {
+        ReceiveNoteDB receivenotedb = new ReceiveNoteDB();
+        ArrayList<ReceiveNote> userreceivenotebyproduct = receivenotedb.getByProduct(p);
+        ArrayList<ReceiveNote> res = new ArrayList<ReceiveNote>();
+        for(ReceiveNote rn : userreceivenotebyproduct)
+        {
+            if(rn.getUser().equals(u))
+            {
+                res.add(rn);
+            }
+        }
+        return res;
+    }
+
+    public void printUserReceiveNoteByProduct(User u, Product p) throws Exception
+    {
+        System.out.println("*********************** Receive Notes of Product " + "[" + p.getProductID() + "] " + p.getName() + " and User " + "[" + u.getUserID() + "] " + u.getUsername() + " ***********************");
+        ArrayList<ReceiveNote> userreceivenotebyproduct = this.getUserReceiveNoteByProduct(u, p);
+        for(ReceiveNote rn : userreceivenotebyproduct)
+        {
+            rn.print();
+        }
+        System.out.println("***********************************************************");
     }
 }
