@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import Cart.Cart;
-import Products.Product;
 import Products.ProductInfo;
 import Users.User;
 
@@ -21,12 +19,12 @@ public class Order implements Serializable {
 	private User user;
 	private LocalDate orderDate;
 	private double totalCost;
-	private Cart cart;
+	private ArrayList<ProductInfo> productInfoList;
 	
     private static final String ANSI_BLUE = "\u001B[34m";
     private static final String ANSI_RESET = "\u001B[0m";
     
-	public Order(User user, Cart cart) throws Exception {
+	public Order(User user, ArrayList<ProductInfo> productInfoList) throws Exception {
         OrderDB orderdb = new OrderDB();
         ArrayList<Order> allorder = orderdb.getAllOrders();
         for(Order o : allorder) {
@@ -35,8 +33,13 @@ public class Order implements Serializable {
         this.orderID = ++Order.idCounter;
 		this.user = user;
 		this.orderDate = LocalDate.now();
-		this.totalCost = cart.getTotalCost();
-		this.cart = cart;
+		this.totalCost = 0;
+		this.productInfoList = new ArrayList<ProductInfo>();
+		for(ProductInfo pq : productInfoList)
+		{
+			this.productInfoList.add(pq);
+			this.totalCost += pq.getProduct().getPrice() * pq.getQuantity();
+		}
         orderdb.update(this);
 	}
 	
@@ -48,8 +51,12 @@ public class Order implements Serializable {
         return this.user;
     }
 
-	public Cart getCart() throws Exception {
-		return this.cart;
+	public LocalDate getOrderDate() throws Exception {
+		return orderDate;
+	}
+
+	public ArrayList<ProductInfo> getProductInfoList() throws Exception {
+		return this.productInfoList;
 	}
 	
 	public double getTotalCost() throws Exception {
@@ -60,8 +67,8 @@ public class Order implements Serializable {
 		String optstr = "";
         optstr += "Order ID : " + this.getOrderID() + '\n';
 		optstr += ANSI_BLUE + "Customer: "+ this.getUser().getUsername() + ANSI_RESET + "\n";
-		optstr += "Date ordered: " + orderDate + "\n"; 
-        for (ProductInfo pq : this.getCart().getItemsInCart()) {
+		optstr += "Date ordered: " + this.getOrderDate() + "\n"; 
+        for (ProductInfo pq : this.getProductInfoList()) {
             optstr += (pq.getDetails()) + '\n' + '\n';
         }
         optstr += ("Total cost : " + this.getTotalCost()) + '\n';

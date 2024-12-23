@@ -280,13 +280,7 @@ public class UserDB {
         }
         else
         {
-            user.setUsername(user_in_db.getUsername());
-            user.setPassword(user_in_db.getPassword());
-            user.setRole(user_in_db.getRole());
-            if((user_in_db instanceof Customer) && (user instanceof Customer))
-            {
-                ((Customer)user).setCart(((Customer)user_in_db).getCart());
-            }
+            user = user_in_db;
             System.out.println("Successfully synced " + user.toString() + " with DB!");
         }
     }

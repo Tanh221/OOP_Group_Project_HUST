@@ -2,22 +2,25 @@ package Products;
 
 import java.io.Serializable;
 
-public class ProductInfo implements Serializable {
+public class ReceiveProductInfo implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private Product product;
     private int quantity;
+    private double receivePrice;
 
-    public ProductInfo(Product product, int quantity) {
+    public ReceiveProductInfo(Product product, int quantity, double receivePrice) {
         this.product = product;
         this.quantity = quantity;
+        this.receivePrice = receivePrice;
     }
 
     public String getDetails() {
         return this.getProduct().getDetails() + '\n' +
-                "Quantity: " + this.getQuantity();
+                "Quantity: " + this.getQuantity() + '\n' + 
+                "Receive Price: " + this.getReceivePrice();
     }
-
+    
     public Product getProduct() {
         return this.product;
     }
@@ -34,13 +37,23 @@ public class ProductInfo implements Serializable {
         this.quantity = quantity;
     }
 
-	@Override
+    public double getReceivePrice() {
+        return this.receivePrice;
+    }
+
+    public void setReceivePrice(double receivePrice) {
+        this.receivePrice = receivePrice;
+    }
+
+    @Override
     public boolean equals(Object otherobj) {
         if (this == otherobj) return true; // the same reference
         if (otherobj == null || getClass() != otherobj.getClass()) return false; // null or different class
-        ProductInfo otherproductquantity = (ProductInfo) otherobj; //
-        return this.getProduct().equals(otherproductquantity.getProduct()) && 
-                this.getQuantity() == otherproductquantity.getQuantity()
+        ReceiveProductInfo otherimportproductinfo = (ReceiveProductInfo) otherobj; //
+        return this.getProduct().equals(otherimportproductinfo.getProduct()) && 
+                this.getQuantity() == otherimportproductinfo.getQuantity() && 
+                this.getReceivePrice() == otherimportproductinfo.getReceivePrice()
                 ;
     }
+
 }

@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 
-import Order.Order;
 import ReceiveNote.ReceiveNote;
 import Users.User;
 
@@ -16,12 +15,12 @@ import java.util.ArrayList;
 
 import exception.DatabaseNotAvailableException;
 
-public class OrderDB {
+public class ReceiveNoteDB {
     private String path;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private boolean avail;
-	private ArrayList<Order> db = new ArrayList<Order>();
+	private ArrayList<ReceiveNote> db = new ArrayList<ReceiveNote>();
     private boolean DEBUG_MODE;
 
     private static final String ANSI_RESET = "\u001B[0m";
@@ -30,15 +29,15 @@ public class OrderDB {
     private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_BLUE = "\u001B[34m";
 
-    public OrderDB()
+    public ReceiveNoteDB()
     {
-        this.path = "./orderdb.dat";
+        this.path = "./receivenotedb.dat";
         this.avail = false;
         this.DEBUG_MODE = false;
         this.init();
     }
 
-    public OrderDB(String path)
+    public ReceiveNoteDB(String path)
     {
         this.path = path;
         this.avail = false;
@@ -46,15 +45,15 @@ public class OrderDB {
         this.init();
     }
 
-    public OrderDB(boolean DEBUG_MODE)
+    public ReceiveNoteDB(boolean DEBUG_MODE)
     {
-        this.path = "./orderdb.dat";
+        this.path = "./receivenotedb.dat";
         this.avail = false;
         this.DEBUG_MODE = DEBUG_MODE;
         this.init();
     }
 
-    public OrderDB(String path, boolean DEBUG_MODE)
+    public ReceiveNoteDB(String path, boolean DEBUG_MODE)
     {
         this.path = path;
         this.avail = false;
@@ -68,7 +67,7 @@ public class OrderDB {
             File file = new File(this.path);
             if(!file.exists() || !file.isFile())
             {
-                this.db = new ArrayList<Order>();
+                this.db = new ArrayList<ReceiveNote>();
                 this.avail = true;
             }
             else
@@ -77,7 +76,7 @@ public class OrderDB {
                 while(fis.available() > 0)
                 {
                     this.ois = new ObjectInputStream(fis);
-                    this.db = (ArrayList<Order>)(this.ois.readObject());
+                    this.db = (ArrayList<ReceiveNote>)(this.ois.readObject());
                 }
                 if(this.ois != null)
                 {
@@ -86,7 +85,7 @@ public class OrderDB {
                 }
                 if(this.db == null)
                 {
-                    this.db = new ArrayList<Order>();
+                    this.db = new ArrayList<ReceiveNote>();
                 }
                 this.avail = true;
             }
@@ -117,7 +116,7 @@ public class OrderDB {
         return this.path;
     }
 
-    public Order add(Order obj) throws Exception {
+    public ReceiveNote add(ReceiveNote obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -128,7 +127,7 @@ public class OrderDB {
         return obj;
     }
 
-    public Order set(int indexInDatabase, Order obj) throws Exception {
+    public ReceiveNote set(int indexInDatabase, ReceiveNote obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -167,7 +166,7 @@ public class OrderDB {
     }
 
 
-    public boolean remove(Order obj) throws Exception {
+    public boolean remove(ReceiveNote obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -187,7 +186,7 @@ public class OrderDB {
         }
     }
 
-    public Order update(Order obj) throws Exception
+    public ReceiveNote update(ReceiveNote obj) throws Exception
     {
         if(!this.avail)
         {
@@ -205,26 +204,26 @@ public class OrderDB {
         }
     }
 
-    public void syncWithDB(Order order) throws Exception
+    public void syncWithDB(ReceiveNote receivenote) throws Exception
     {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        Order order_in_db = this.getByOrderID(order.getOrderID());
-        if(order_in_db == null)
+        ReceiveNote receivenote_in_db = this.getByReceiveNoteID(receivenote.getReceiveNoteID());
+        if(receivenote_in_db == null)
         {
-            System.err.println(ANSI_RED + order.toString() + " hasn't been in the database." + ANSI_RESET);
+            System.err.println(ANSI_RED + receivenote.toString() + " hasn't been in the database." + ANSI_RESET);
         }
         else
         {
-            order = order_in_db;
-            System.out.println("Successfully synced " + order.toString() + " with DB!");
+            receivenote = receivenote_in_db;
+            System.out.println("Successfully synced " + receivenote.toString() + " with DB!");
         }
     }
 
-    public int indexOf(Order obj) throws Exception {
+    public int indexOf(ReceiveNote obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -233,14 +232,14 @@ public class OrderDB {
         return this.db.indexOf(obj);
     }
 
-    public ArrayList<Order> getByUser(User u) throws Exception {
+    public ArrayList<ReceiveNote> getByUser(User u) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        ArrayList<Order> res = new ArrayList<Order>();
-        for(Order e : this.db) {
+        ArrayList<ReceiveNote> res = new ArrayList<ReceiveNote>();
+        for(ReceiveNote e : this.db) {
             if(e.getUser().equals(u)) {
                 res.add(e);
             }
@@ -248,14 +247,14 @@ public class OrderDB {
         return res;
     }
 
-    public ArrayList<Order> getByUserID(int userid) throws Exception {
+    public ArrayList<ReceiveNote> getByUserID(int userid) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        ArrayList<Order> res = new ArrayList<Order>();
-        for(Order e : this.db) {
+        ArrayList<ReceiveNote> res = new ArrayList<ReceiveNote>();
+        for(ReceiveNote e : this.db) {
             if(e.getUser().getUserID() == userid) {
                 res.add(e);
             }
@@ -263,20 +262,20 @@ public class OrderDB {
         return res;
     }
 
-    public Order getByOrderID(int orderid) throws Exception {
+    public ReceiveNote getByReceiveNoteID(int receivenoteid) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        for(Order e : this.db) {
-            if(e.getOrderID() == orderid) {
+        for(ReceiveNote e : this.db) {
+            if(e.getReceiveNoteID() == receivenoteid) {
                 return e;
             }
         }
         return null;
     }
-    public ArrayList<Order> getAllOrders() throws Exception {
+    public ArrayList<ReceiveNote> getAllReceiveNotes() throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -327,7 +326,7 @@ public class OrderDB {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.ois = new ObjectInputStream(new FileInputStream(new File(this.path)));
-        this.db = (ArrayList<Order>)(this.ois.readObject());
+        this.db = (ArrayList<ReceiveNote>)(this.ois.readObject());
         this.ois.close();
         if(this.DEBUG_MODE)
         {
@@ -358,7 +357,7 @@ public class OrderDB {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        ArrayList<Order> data = this.db;
+        ArrayList<ReceiveNote> data = this.db;
         this.oos = new ObjectOutputStream(new FileOutputStream(new File(path)));
         this.oos.writeObject(data);
         this.oos.close();

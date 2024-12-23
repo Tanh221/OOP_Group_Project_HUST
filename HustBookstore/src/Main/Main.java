@@ -17,6 +17,8 @@ import Users.Staff;
 import Users.Admin;
 import Users.User;
 
+import Order.Order;
+
 public class Main {
 	private static final Boolean FIRST_RUN = false;
 
@@ -122,14 +124,18 @@ public class Main {
 				}
 			}
 			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
-			staff1.updateAuthorOfBook(store, (Book)pq3.getProduct(), "xyz"); // cập nhật tác giả của quyển sách ["Harry Potter and BCM"] thành abc
-			customer1.getCart().print(); // tên quyển sách cart cũng sync theo
+			customer1.getCart().print(); // in ra cart của người dùng
+			staff1.updateAuthorOfBook((Book)pq3.getProduct(), "xyz"); // cập nhật tác giả của quyển sách ["Harry Potter and BCM"] thành xyz
+			customer1.getCart().print(); // tên quyển sách trong cart cũng sync theo
 			store.print(); // quantity của các product chưa bị trừ
-			customer1.pay(); // pay (tự tạo order và lưu vào orderdb)
+			Order o = customer1.pay(); // pay (tự tạo order và lưu vào orderdb)
 			store.print(); // quantity đã bị trừ
-			staff1.updateAuthorOfBook(store, (Book)pq3.getProduct(), "abc"); // cập nhật tác giả của quyển sách ["Harry Potter and BCM"] thành xyz
-			staff1.getOrdersOfUser(customer1); // order giữ nguyên thông tin
-			customer1.getMyOrders(); // user cũng tự xem đc các order của mình
+			staff1.updateAuthorOfBook((Book)pq3.getProduct(), "abc"); // cập nhật tác giả của quyển sách ["Harry Potter and BCM"] thành abc
+			staff1.getAllOrdersOfUser(customer1); // order giữ nguyên thông tin
+			customer1.getAllMyOrders(); // user cũng tự xem đc các order của mình
+			customer1.getCart().print(); // tên quyển sách trong cart cũng sync theo
+			System.out.println(o.getDetails()); // order cũng ko thay đổi thông tin
+			staff1.printAllMyReceiveNotes();
 		}
 	}
 
@@ -154,19 +160,19 @@ public class Main {
 		Book book1 = new Book("Harry Potter and BCM", 1.0d, "The Adventure of Harry Potter and BCM", "BCM", 5);
 		Book book2 = new Book("Harry Potter and PDD", 100.0d, "The Adventure of Harry Potter and PDD", "PDD", 200);
 		
-		staff1.addProductToStore(store, book1, 10); // thêm 10 cuốn sách book1 vào store
-		staff1.addProductToStore(store, book2, 20); // thêm 20 cuốn sách book2 vào store
+		staff1.addProductToStore(book1, 10, 4.0); // thêm 10 cuốn sách book1 vào store với giá nhập là 4.0
+		staff1.addProductToStore(book2, 20, 5.0); // thêm 20 cuốn sách book2 vào store với giá nhập là 5.0
 		
 		Toy toy1 = new Toy("Tai nghe 100 cu", 100000000d, "Tai nghe nghe sieu hay", "Handmade");
 		Toy toy2 = new Toy("Laptop 1 ty 7", 1700000000d, "Laptop sieu khoe", "Hang tang khong ban");
 		Toy toy3 = new Toy("But bi", 2.0d, "but bi cho hoc sinh", "Thien Long");
 		
-		staff1.addProductToStore(store, toy1, 2); // thêm 2 toy1 vào store
-		staff1.addProductToStore(store, toy2); // thêm 1 toy2 vào store
-		staff1.addProductToStore(store, toy3, 100); // thêm 100 toy3 vào store
+		staff1.addProductToStore(toy1, 2, 10.4); // thêm 2 toy1 vào store với giá nhập là 10.4
+		staff1.addProductToStore(toy2, 1, 5.7); // thêm 1 toy2 vào store  với giá nhập là 5.7
+		staff1.addProductToStore(toy3, 100, 1.2); // thêm 100 toy3 vào store với giá nhập là 1.2
 		
 		Staff staff2 = generateStaff("Mai Van Nhat Minh", "Hoc Gioi");
 		Toy toy4 = new Toy("Rong trang mat xanh", 100d, "Sieu khoe", "Yugioh");
-		staff2.addProductToStore(store, toy4, 10);
+		staff2.addProductToStore(toy4, 1, 10);
 	}
 }

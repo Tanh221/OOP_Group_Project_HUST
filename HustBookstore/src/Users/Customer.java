@@ -71,13 +71,12 @@ public class Customer extends User {
 
     public void syncCartWithStore() throws Exception {
         // userdb.syncWithDB(this);
-        Store s = new Store();
-        this.cart.syncWithStore(s);
+        this.cart.syncWithStore();
         UserDB userdb = new UserDB();
         userdb.update(this);
     }
 
-    public void pay() throws Exception {
+    public Order pay() throws Exception {
         Store s = new Store();
         this.syncCartWithStore();
         Boolean check = true;
@@ -94,7 +93,7 @@ public class Customer extends User {
         }
         if(check)
         {
-            Order order = new Order(this, this.getCart());
+            Order order = new Order(this, this.getCart().getItemsInCart());
             order.print();
             for(ProductInfo pq: this.cart.getItemsInCart())
             {
@@ -103,22 +102,56 @@ public class Customer extends User {
             this.cart.clear();
             UserDB userdb = new UserDB();
             userdb.update(this);
+            return order;
         }
         else
         {
             System.err.println(ANSI_RED + errstr + ANSI_RESET);
+            return null;
         }
     }
 
-    public void getMyOrders() throws Exception
+    public ArrayList<Order> getAllMyOrders() throws Exception
     {
-        System.out.println("*********************** Order of " + "[" + this.getUserID() + "] " + this.getUsername() + " ***********************");
         OrderDB orderdb = new OrderDB();
-        ArrayList<Order> ordersofuser = orderdb.getByUser(this);
+        return orderdb.getByUser(this);
+    }
+
+    public void printAllMyOrders() throws Exception
+    {
+        System.out.println("*********************** Orders of " + "[" + this.getUserID() + "] " + this.getUsername() + " ***********************");
+        ArrayList<Order> ordersofuser = this.getAllMyOrders();
         for(Order o : ordersofuser)
         {
             o.print();
         }
         System.out.println("***********************************************************");
+    }
+
+    public Order getMyOrderByID(int orderID) throws Exception
+    {
+        OrderDB orderdb = new OrderDB();
+        Order o = orderdb.getByOrderID(orderID);
+        if(o.getUser().equals(this))
+        {
+            return o;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void printMyOrderByID(int orderID) throws Exception
+    {
+        Order o = this.getMyOrderByID(orderID);
+        if(o != null)
+        {
+            o.print();
+        }
+        else
+        {
+            System.out.println("There is no other with id " + orderID + " in " + this.getUsername() + " orders history!");
+        }
     }
 }

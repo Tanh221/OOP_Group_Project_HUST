@@ -125,7 +125,8 @@ public class Cart implements Serializable {
         return -1;
     }
 
-    public void syncWithStore(Store s) throws Exception {
+    public void syncWithStore() throws Exception {
+        Store s = new Store();
         for(ProductInfo pq : this.itemsInCart)
         {
             pq.setProduct((s.getByProduct(pq.getProduct())).getProduct());
@@ -134,6 +135,7 @@ public class Cart implements Serializable {
 
     public void clear() {
         this.itemsInCart.clear();
+        this.totalCost = 0;
     }
 
     public String getDetails() {
