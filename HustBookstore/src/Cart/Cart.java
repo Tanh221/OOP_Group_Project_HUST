@@ -8,6 +8,7 @@ import Products.Product;
 import Products.ProductQuantity;
 import Products.Toy;
 import Products.Book;
+import Store.Store;
 
 public class Cart implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -122,6 +123,13 @@ public class Cart implements Serializable {
             }
         }
         return -1;
+    }
+
+    public void syncWithStore(Store s) throws Exception {
+        for(ProductQuantity pq : this.itemsInCart)
+        {
+            pq.setProduct((s.getByProduct(pq.getProduct())).getProduct());
+        }
     }
 
     public void clear() {

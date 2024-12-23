@@ -36,7 +36,7 @@ public abstract class User implements Serializable {
     public int getUserID() {
         return this.userID;
     }
-	public String getUsername() {
+	public String getUsername() throws Exception {
 		return this.username;
 	}
 	public void setUsername(String username) throws Exception {
@@ -44,7 +44,7 @@ public abstract class User implements Serializable {
 		UserDB userdb = new UserDB();
         userdb.update(this);
 	}
-	public String getPassword() {
+	public String getPassword() throws Exception {
 		return this.password;
 	}
 	public void setPassword(String password) throws Exception {
@@ -52,7 +52,7 @@ public abstract class User implements Serializable {
 		UserDB userdb = new UserDB();
         userdb.update(this);
 	}
-	public String getRole() {
+	public String getRole() throws Exception {
 		return this.role;
 	}
 	public void setRole(String role) throws Exception {

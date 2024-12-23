@@ -7,6 +7,9 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 
 import Users.User;
+import Users.Staff;
+import Users.Admin;
+import Users.Customer;
 
 import java.util.Date;
 import java.util.ArrayList;
@@ -131,7 +134,15 @@ public class UserDB {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        this.db.set(indexInDatabase, obj);
+        if(indexInDatabase < 0 || indexInDatabase >= this.size())
+        {
+            System.err.println(ANSI_RED + "Index " + indexInDatabase + " out of bounds for length " + this.size() + "." + ANSI_RESET);
+            return null;
+        }
+        else
+        {
+            this.db.set(indexInDatabase, obj);
+        }
         this.save();
         return obj;
     }
@@ -143,7 +154,7 @@ public class UserDB {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        if(indexInDatabase <= 0 || indexInDatabase >= this.size())
+        if(indexInDatabase < 0 || indexInDatabase >= this.size())
         {
             System.err.println(ANSI_RED + "Index " + indexInDatabase + " out of bounds for length " + this.size() + "." + ANSI_RESET);
             return false;
@@ -164,7 +175,7 @@ public class UserDB {
         }
         this.read();
         int id = this.indexOf(obj);
-        if(id <= 0 || id >= this.size())
+        if(id < 0 || id >= this.size())
         {
             System.err.println(ANSI_RED + obj.toString() + " hasn't been in the database." + ANSI_RESET);
             return false;
@@ -255,7 +266,30 @@ public class UserDB {
         this.read();
         return this.db;
     }
-
+    public void syncWithDB(User user) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
+        }
+        this.read();
+        User user_in_db = this.getByUserID(user.getUserID());
+        if(user_in_db == null)
+        {
+            System.err.println(ANSI_RED + user.toString() + " hasn't been in the database." + ANSI_RESET);
+        }
+        else
+        {
+            user.setUsername(user_in_db.getUsername());
+            user.setPassword(user_in_db.getPassword());
+            user.setRole(user_in_db.getRole());
+            if((user_in_db instanceof Customer) && (user instanceof Customer))
+            {
+                ((Customer)user).setCart(((Customer)user_in_db).getCart());
+            }
+            System.out.println("Successfully synced " + user.toString() + " with DB!");
+        }
+    }
     public boolean isEmpty() throws Exception
     {
         if(!this.avail)

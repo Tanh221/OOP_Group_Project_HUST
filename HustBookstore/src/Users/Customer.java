@@ -1,10 +1,14 @@
 package Users;
 
+import java.util.ArrayList;
+
 import Cart.Cart;
+import Databases.OrderDB;
 import Databases.UserDB;
 import Products.Product;
 import Products.ProductQuantity;
 import Store.Store;
+import Order.Order;
 
 public class Customer extends User {
     private static final String ANSI_RESET = "\u001B[0m";
@@ -21,13 +25,22 @@ public class Customer extends User {
         userdb.update(this);
 	}
 
-    public Cart getCart() {
+    public Cart getCart() throws Exception {
+        this.syncCartWithStore();
         return this.cart;
+    }
+
+    public void setCart(Cart c) throws Exception {
+        this.cart = c;
+        this.syncCartWithStore();
+        UserDB userdb = new UserDB();
+        userdb.update(this);
     }
 
     public void addProductToCart(Product p) throws Exception {
         // add 1 product p to Store s
 		this.cart.addProduct(p);
+        this.syncCartWithStore();
         UserDB userdb = new UserDB();
         userdb.update(this);
     }
@@ -35,6 +48,7 @@ public class Customer extends User {
     public void removeProductFromCart(Product p) throws Exception {
         // remove all product p from Store s
 		this.cart.removeProduct(p);
+        this.syncCartWithStore();
         UserDB userdb = new UserDB();
         userdb.update(this);
     }
@@ -42,6 +56,7 @@ public class Customer extends User {
     public void addProductToCart(Product p, int quantity) throws Exception {
         // add {quantity} product p to Store s
 		this.cart.addProduct(p, quantity);
+        this.syncCartWithStore();
         UserDB userdb = new UserDB();
         userdb.update(this);
     }
@@ -49,11 +64,22 @@ public class Customer extends User {
     public void removeProductFromCart(Product p, int quantity) throws Exception {
         // remove {quantity} product p from Store s
 		this.cart.removeProduct(p, quantity);
+        this.syncCartWithStore();
         UserDB userdb = new UserDB();
         userdb.update(this);
     }
 
-    public void pay(Store s) throws Exception {
+    public void syncCartWithStore() throws Exception {
+        // userdb.syncWithDB(this);
+        Store s = new Store();
+        this.cart.syncWithStore(s);
+        UserDB userdb = new UserDB();
+        userdb.update(this);
+    }
+
+    public void pay() throws Exception {
+        Store s = new Store();
+        this.syncCartWithStore();
         Boolean check = true;
         String errstr = "";
         for(ProductQuantity pq: this.cart.getItemsInCart())
@@ -68,7 +94,8 @@ public class Customer extends User {
         }
         if(check)
         {
-            this.cart.print();
+            Order order = new Order(this, this.getCart());
+            order.print();
             for(ProductQuantity pq: this.cart.getItemsInCart())
             {
                 s.removeProduct(pq.getProduct(), pq.getQuantity());
@@ -81,5 +108,17 @@ public class Customer extends User {
         {
             System.err.println(ANSI_RED + errstr + ANSI_RESET);
         }
+    }
+
+    public void getMyOrders() throws Exception
+    {
+        System.out.println("*********************** Order of " + "[" + this.getUserID() + "] " + this.getUsername() + " ***********************");
+        OrderDB orderdb = new OrderDB();
+        ArrayList<Order> ordersofuser = orderdb.getByUser(this);
+        for(Order o : ordersofuser)
+        {
+            o.print();
+        }
+        System.out.println("***********************************************************");
     }
 }

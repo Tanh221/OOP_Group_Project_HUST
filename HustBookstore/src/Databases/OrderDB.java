@@ -4,21 +4,23 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.util.HashMap;
 
-import Products.Product;
+import Order.Order;
+import Users.User;
 
 import java.util.Date;
 import java.util.ArrayList;
 
 import exception.DatabaseNotAvailableException;
 
-public class ProductDB {
+public class OrderDB {
     private String path;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private boolean avail;
-	private ArrayList<Product> db = new ArrayList<Product>();
+	private ArrayList<Order> db = new ArrayList<Order>();
     private boolean DEBUG_MODE;
 
     private static final String ANSI_RESET = "\u001B[0m";
@@ -27,15 +29,15 @@ public class ProductDB {
     private static final String ANSI_YELLOW = "\u001B[33m";
     private static final String ANSI_BLUE = "\u001B[34m";
 
-    public ProductDB()
+    public OrderDB()
     {
-        this.path = "./productdb.dat";
+        this.path = "./orderdb.dat";
         this.avail = false;
         this.DEBUG_MODE = false;
         this.init();
     }
 
-    public ProductDB(String path)
+    public OrderDB(String path)
     {
         this.path = path;
         this.avail = false;
@@ -43,15 +45,15 @@ public class ProductDB {
         this.init();
     }
 
-    public ProductDB(boolean DEBUG_MODE)
+    public OrderDB(boolean DEBUG_MODE)
     {
-        this.path = "./productdb.dat";
+        this.path = "./orderdb.dat";
         this.avail = false;
         this.DEBUG_MODE = DEBUG_MODE;
         this.init();
     }
 
-    public ProductDB(String path, boolean DEBUG_MODE)
+    public OrderDB(String path, boolean DEBUG_MODE)
     {
         this.path = path;
         this.avail = false;
@@ -65,7 +67,7 @@ public class ProductDB {
             File file = new File(this.path);
             if(!file.exists() || !file.isFile())
             {
-                this.db = new ArrayList<Product>();
+                this.db = new ArrayList<Order>();
                 this.avail = true;
             }
             else
@@ -74,7 +76,7 @@ public class ProductDB {
                 while(fis.available() > 0)
                 {
                     this.ois = new ObjectInputStream(fis);
-                    this.db = (ArrayList<Product>)(this.ois.readObject());
+                    this.db = (ArrayList<Order>)(this.ois.readObject());
                 }
                 if(this.ois != null)
                 {
@@ -83,7 +85,7 @@ public class ProductDB {
                 }
                 if(this.db == null)
                 {
-                    this.db = new ArrayList<Product>();
+                    this.db = new ArrayList<Order>();
                 }
                 this.avail = true;
             }
@@ -114,7 +116,7 @@ public class ProductDB {
         return this.path;
     }
 
-    public Product add(Product obj) throws Exception {
+    public Order add(Order obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -125,7 +127,7 @@ public class ProductDB {
         return obj;
     }
 
-    public Product set(int indexInDatabase, Product obj) throws Exception {
+    public Order set(int indexInDatabase, Order obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -164,7 +166,7 @@ public class ProductDB {
     }
 
 
-    public boolean remove(Product obj) throws Exception {
+    public boolean remove(Order obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -184,7 +186,7 @@ public class ProductDB {
         }
     }
 
-    public Product update(Product obj) throws Exception
+    public Order update(Order obj) throws Exception
     {
         if(!this.avail)
         {
@@ -202,7 +204,7 @@ public class ProductDB {
         }
     }
 
-    public int indexOf(Product obj) throws Exception {
+    public int indexOf(Order obj) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -210,33 +212,51 @@ public class ProductDB {
         this.read();
         return this.db.indexOf(obj);
     }
-    public Product getByProductID(int id) throws Exception {
+
+    public ArrayList<Order> getByUser(User u) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        for(Product e : this.db) {
-            if(e.getProductID() == id) {
-                return e;
+        ArrayList<Order> res = new ArrayList<Order>();
+        for(Order e : this.db) {
+            if(e.getUser().getUserID() == u.getUserID()) {
+                res.add(e);
             }
         }
-        return null;
+        return res;
     }
-    public Product getByProductName(String productname) throws Exception {
+
+    public ArrayList<Order> getByUserID(int userid) throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        for(Product e : this.db) {
-            if(e.getName().equals(productname)) {
+        ArrayList<Order> res = new ArrayList<Order>();
+        for(Order e : this.db) {
+            if(e.getUser().getUserID() == userid) {
+                res.add(e);
+            }
+        }
+        return res;
+    }
+
+    public Order getByOrderID(int orderid) throws Exception {
+        if(!this.avail)
+        {
+            throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
+        }
+        this.read();
+        for(Order e : this.db) {
+            if(e.getOrderID() == orderid) {
                 return e;
             }
         }
         return null;
     }
-    public ArrayList<Product> getAllProducts() throws Exception {
+    public ArrayList<Order> getAllOrders() throws Exception {
         if(!this.avail)
         {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
@@ -287,7 +307,7 @@ public class ProductDB {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.ois = new ObjectInputStream(new FileInputStream(new File(this.path)));
-        this.db = (ArrayList<Product>)(this.ois.readObject());
+        this.db = (ArrayList<Order>)(this.ois.readObject());
         this.ois.close();
         if(this.DEBUG_MODE)
         {
@@ -318,7 +338,7 @@ public class ProductDB {
             throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
         }
         this.read();
-        ArrayList<Product> data = this.db;
+        ArrayList<Order> data = this.db;
         this.oos = new ObjectOutputStream(new FileOutputStream(new File(path)));
         this.oos.writeObject(data);
         this.oos.close();

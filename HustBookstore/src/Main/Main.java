@@ -122,11 +122,14 @@ public class Main {
 				}
 			}
 			// userdb.update(customer1); // ko cần dòng này nữa vì customer1 nó tự lưu r
-
-			customer1.getCart().print();
+			staff1.updateAuthorOfBook(store, (Book)pq3.getProduct(), "xyz"); // cập nhật tác giả của quyển sách ["Harry Potter and BCM"] thành abc
+			customer1.getCart().print(); // tên quyển sách cart cũng sync theo
 			store.print(); // quantity của các product chưa bị trừ
-			customer1.pay(store);
+			customer1.pay(); // pay (tự tạo order và lưu vào orderdb)
 			store.print(); // quantity đã bị trừ
+			staff1.updateAuthorOfBook(store, (Book)pq3.getProduct(), "abc"); // cập nhật tác giả của quyển sách ["Harry Potter and BCM"] thành xyz
+			staff1.getOrdersOfUser(customer1); // order giữ nguyên thông tin
+			customer1.getMyOrders(); // user cũng tự xem đc các order của mình
 		}
 	}
 
@@ -161,7 +164,7 @@ public class Main {
 		staff1.addProductToStore(store, toy1, 2); // thêm 2 toy1 vào store
 		staff1.addProductToStore(store, toy2); // thêm 1 toy2 vào store
 		staff1.addProductToStore(store, toy3, 100); // thêm 100 toy3 vào store
-
+		
 		Staff staff2 = generateStaff("Mai Van Nhat Minh", "Hoc Gioi");
 		Toy toy4 = new Toy("Rong trang mat xanh", 100d, "Sieu khoe", "Yugioh");
 		staff2.addProductToStore(store, toy4, 10);

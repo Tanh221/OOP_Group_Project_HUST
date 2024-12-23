@@ -226,6 +226,144 @@ public class Store {
             }
         }
     }
+    public void updateNameOfProduct(Product p, String newName) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(p);
+        if(id == -1)
+        {
+            System.out.println("[" + p.getClass() + "] " + p.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductQuantity pq = this.itemsInStore.get(id);
+            String OldName = pq.getProduct().getName();
+            pq.getProduct().setName(newName);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated name of " + " [" + p.getClass() + "] " + OldName + " to " + newName + "!");
+        }
+    }
+    public void updatePriceOfProduct(Product p, double newPrice) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(p);
+        if(id == -1)
+        {
+            System.out.println("[" + p.getClass() + "] " + p.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductQuantity pq = this.itemsInStore.get(id);
+            double OldPrice = pq.getProduct().getPrice();
+            pq.getProduct().setPrice(newPrice);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated price of " + " [" + p.getClass() + "] " + OldPrice + " to " + newPrice + "!");
+        }
+    }
+    public void updateDescriptionOfProduct(Product p, String newDescription) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(p);
+        if(id == -1)
+        {
+            System.out.println("[" + p.getClass() + "] " + p.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductQuantity pq = this.itemsInStore.get(id);
+            String oldDescription = pq.getProduct().getDescription();
+            pq.getProduct().setDescription(newDescription);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated description of " + " [" + p.getClass() + "] " + oldDescription + " to " + newDescription + "!");
+        }
+    }
+    public void updateQuantityOfProduct(Product p, int newQuantity) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(p);
+        if(id == -1)
+        {
+            System.out.println("[" + p.getClass() + "] " + p.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductQuantity pq = this.itemsInStore.get(id);
+            int oldQuantity = pq.getQuantity();
+            pq.setQuantity(newQuantity);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated quantity of " + " [" + p.getClass() + "] " + oldQuantity + " to " + newQuantity + "!");
+        }
+    }
+    public void updateAuthorOfBook(Book b, String newAuthor) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(b);
+        if(id == -1)
+        {
+            System.out.println("[" + b.getClass() + "] " + b.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductQuantity pq = this.itemsInStore.get(id);
+            String oldAuthor = ((Book)(pq.getProduct())).getAuthor();
+            ((Book)(pq.getProduct())).setAuthor(newAuthor);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated author of " + " [" + b.getClass() + "] " + oldAuthor + " to " + newAuthor + "!");
+        }
+    }
+    public void updateBrandOfToy(Toy t, String newBrand) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(t);
+        if(id == -1)
+        {
+            System.out.println("[" + t.getClass() + "] " + t.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductQuantity pq = this.itemsInStore.get(id);
+            String oldBrand = ((Toy)(pq.getProduct())).getBrand();
+            ((Toy)(pq.getProduct())).setBrand(newBrand);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated brand of " + " [" + t.getClass() + "] " + oldBrand + " to " + newBrand + "!");
+        }
+    }
     public int indexOf(Product p) throws Exception
     {
         if(!this.avail)
