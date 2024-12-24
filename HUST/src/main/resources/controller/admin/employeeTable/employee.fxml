@@ -96,8 +96,8 @@
                      <children>
                         <TableView fx:id="table" editable="true" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" GridPane.rowIndex="1">
                           <columns>
-                            <TableColumn fx:id="id" minWidth="15.0" prefWidth="55.4666748046875" resizable="false" text="ID" />
-                            <TableColumn fx:id="name" prefWidth="246.40003967285156" text="Name" />
+                            <TableColumn fx:id="userID" minWidth="15.0" prefWidth="55.4666748046875" resizable="false" text="ID" />
+                            <TableColumn fx:id="username" prefWidth="246.40003967285156" text="Name" />
                               <TableColumn fx:id="phone" prefWidth="181.86669921875" text="Phone" />
                               <TableColumn fx:id="date" prefWidth="144.26678466796875" text="Date Joined" />
                               <TableColumn fx:id="salary" prefWidth="202.13330078125" text="Salary" />

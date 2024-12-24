@@ -107,7 +107,7 @@
                         </TableView>
                         <AnchorPane prefHeight="200.0" prefWidth="200.0">
                            <children>
-                              <Button layoutX="570.0" layoutY="36.0" mnemonicParsing="false" text="Extract">
+                              <Button layoutX="570.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleExtractButton" text="Extract">
                                  <font>
                                     <Font size="13.0" />
                                  </font></Button>

@@ -10,6 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Databases.UserDB;
+import model.Users.Admin;
+import model.Users.Customer;
+import model.Users.Staff;
+import model.Users.User;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,10 +26,15 @@ public class Login {
     @FXML
     TextField passwordField;
 
+
+    private static UserDB userdb = new UserDB();
+    public static Staff staff;
+    public static Admin admin;
+    public static Customer customer;
     Stage dialogStage = new Stage();
     Scene scene;
 
-    public void handleLoginButton(ActionEvent event) throws IOException {
+    public void handleLoginButton(ActionEvent event) throws Exception {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
@@ -36,28 +46,21 @@ public class Login {
         }
         else {
             try{
-                FileReader file = new FileReader("src/main/resources/user&pass.txt");
-                BufferedReader reader = new BufferedReader(file);
-                String line;
-                String[] data;
-                while ((line = reader.readLine()) != null) {
-                    data = line.split(",");
-                    if(username.equals(data[0]) && password.equals(data[1])){
-                        String name = data[0];
-                        if (data[4].equals("1")){
+                User user = userdb.getByUsernameAndPassword(username,password);
 
-                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/dashboard.fxml"));
-                            Parent root = fxmlLoader.load();
+                if (user instanceof Admin){
+                        admin = (Admin) user;
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/dashboard.fxml"));
+                        Parent root = fxmlLoader.load();
 
-                            dashboard controller = fxmlLoader.getController();
-                            controller.sendName(name);
+                        dashboard controller = fxmlLoader.getController();
+                        controller.sendName(user.getUsername());
 
-                            dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                            scene = new Scene(root);
-                            dialogStage.setScene(scene);
-                            dialogStage.show();
-
-                        }
+                        dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        scene = new Scene(root);
+                        dialogStage.setScene(scene);
+                        dialogStage.show();
+                }
                         else {
                             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/user/Dashboard.fxml"));
                             Parent root = fxmlLoader.load();
@@ -66,16 +69,15 @@ public class Login {
                             dialogStage.setScene(scene);
                             dialogStage.show();
                         }
+                    }catch (Exception e) {
+                         System.out.println(e);
                     }
 
-                }
-
-            } catch (Exception e) {
-                System.out.println(e);
+            }
             }
 
-        }
-    }
+
+
 
     public void handleRegisterButton(ActionEvent event) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/Register.fxml"));

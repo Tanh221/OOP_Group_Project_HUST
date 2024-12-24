@@ -1,6 +1,7 @@
 package controller.admin;
 
 
+import controller.Login;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,8 @@ public class dashboard {
     public Button employeeButton;
     @FXML
     private Label name;
+
+
 
     public String holder;
     Stage dialogStage = new Stage();
@@ -72,10 +75,10 @@ public class dashboard {
         dialogStage.show();
     }
 
-    public void sendName(String name) {
+    public void sendName(String name) throws Exception {
         holder = name;
         if (this.name != null) { // Ensure the FXML Label is initialized
-            this.name.setText("Hello " + holder + "!");
+            this.name.setText("Hello " + controller.Login.admin.getUsername() + "!");
         }
     }
 
