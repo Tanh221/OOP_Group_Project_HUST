@@ -10,6 +10,7 @@ import Products.Product;
 import Products.ProductInfo;
 import Users.User;
 
+import Databases.UserDB;
 import Databases.ReceiveNoteDB;
 
 public class ReceiveNote implements Serializable {
@@ -62,6 +63,7 @@ public class ReceiveNote implements Serializable {
     }
 
     public User getUser() throws Exception {
+        this.syncUserWithDB();
         return this.user;
     }
 
@@ -75,6 +77,11 @@ public class ReceiveNote implements Serializable {
 
     public double getTotalCost() throws Exception {
 		return this.totalCost;
+	}
+
+	public void syncUserWithDB() throws Exception {
+		UserDB userdb = new UserDB();
+		this.user = userdb.getByUserID(this.user.getUserID());
 	}
 
 	public String getDetails() throws Exception {

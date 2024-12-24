@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import Products.ProductInfo;
 import Users.User;
 
+import Databases.UserDB;
 import Databases.OrderDB;
 
 public class Order implements Serializable {
@@ -48,6 +49,7 @@ public class Order implements Serializable {
     }
 
     public User getUser() throws Exception {
+		this.syncUserWithDB();
         return this.user;
     }
 
@@ -61,6 +63,11 @@ public class Order implements Serializable {
 	
 	public double getTotalCost() throws Exception {
 		return this.totalCost;
+	}
+
+	public void syncUserWithDB() throws Exception {
+		UserDB userdb = new UserDB();
+		this.user = userdb.getByUserID(this.user.getUserID());
 	}
 	
 	public String getDetails() throws Exception {

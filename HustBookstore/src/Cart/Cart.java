@@ -127,9 +127,11 @@ public class Cart implements Serializable {
 
     public void syncWithStore() throws Exception {
         Store s = new Store();
+        this.totalCost = 0;
         for(ProductInfo pq : this.itemsInCart)
         {
             pq.setProduct((s.getByProduct(pq.getProduct())).getProduct());
+            this.totalCost += pq.getProduct().getPrice() * pq.getQuantity();
         }
     }
 

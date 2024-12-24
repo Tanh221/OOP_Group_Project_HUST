@@ -25,8 +25,8 @@ public class Staff extends User {
 		super(username, password, "Staff");
         UserDB userdb = new UserDB();
         userdb.update(this);
-		// TODO Auto-generated constructor stub
 	}
+
     public void removeProductFromStore(Product p) throws Exception
     {
         Store s = new Store();

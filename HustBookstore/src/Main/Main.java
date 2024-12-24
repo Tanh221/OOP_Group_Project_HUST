@@ -131,8 +131,8 @@ public class Main {
 			Order o = customer1.pay(); // pay (tự tạo order và lưu vào orderdb)
 			store.print(); // quantity đã bị trừ
 			staff1.updateAuthorOfBook((Book)pq3.getProduct(), "abc"); // cập nhật tác giả của quyển sách ["Harry Potter and BCM"] thành abc
-			staff1.getAllOrdersOfUser(customer1); // order giữ nguyên thông tin
-			customer1.getAllMyOrders(); // user cũng tự xem đc các order của mình
+			staff1.printAllOrdersOfUser(customer1); // order giữ nguyên thông tin
+			customer1.printAllMyOrders(); // user cũng tự xem đc các order của mình
 			customer1.getCart().print(); // tên quyển sách trong cart cũng sync theo
 			System.out.println(o.getDetails()); // order cũng ko thay đổi thông tin
 			staff1.printAllMyReceiveNotes();
@@ -142,7 +142,20 @@ public class Main {
 			Staff staff3 = (Staff) user3;
 			
 			staff1.printUserReceiveNoteByProduct(staff3, pq3.getProduct()); // in tất cả đơn nhập quyển sách ["Harry Potter and BCM"] được nhập bởi staff 3
+
+			User user4 = userdb.getByUsernameAndPassword("Admin", "Admin");
+			Admin admin1 = (Admin) user4;
+
+			admin1.changeUserUsername(customer1, "New name, yay");
+			System.out.println(o.getDetails()); // order cũng cập nhật thông tin theo user
+			customer1.printAllMyOrders(); // order cũng cập nhật thông tin theo user
 		}
+	}
+
+	private static Admin generateAdmin(String username, String password) throws Exception
+	{
+		Admin admin = new Admin(username, password);
+		return admin;
 	}
 
 	private static Staff generateStaff(String username, String password) throws Exception
@@ -181,5 +194,7 @@ public class Main {
 		Staff staff2 = generateStaff("Mai Van Nhat Minh", "Hoc Gioi");
 		Toy toy4 = new Toy("Rong trang mat xanh", 100d, "Sieu khoe", "Yugioh");
 		staff2.addProductToStore(toy4, 1, 10);
+
+		Admin admin1 = generateAdmin("Admin", "Admin");
 	}
 }
