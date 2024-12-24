@@ -19,7 +19,7 @@ public class Customer extends User {
 
 	private Cart cart;
 	public Customer(String username, String password) throws Exception {
-		super(username, password, "Customer");
+		super(username, password);
 		this.cart = new Cart();
         UserDB userdb = new UserDB();
         userdb.update(this);

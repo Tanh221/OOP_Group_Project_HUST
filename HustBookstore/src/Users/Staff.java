@@ -22,7 +22,7 @@ public class Staff extends User {
     private static final String ANSI_BLUE = "\u001B[34m";
 
 	public Staff(String username, String password) throws Exception {
-		super(username, password, "Staff");
+		super(username, password);
         UserDB userdb = new UserDB();
         userdb.update(this);
 	}
@@ -95,30 +95,23 @@ public class Staff extends User {
         System.out.println("***********************************************************");
     }
 
-    public Order getUserOrderByOrderID(User u, int orderID) throws Exception
+    public Order getOrderByOrderID(int orderID) throws Exception
     {
         OrderDB orderdb = new OrderDB();
         Order o = orderdb.getByOrderID(orderID);
-        if(o.getUser().equals(u))
-        {
-            return o;
-        }
-        else
-        {
-            return null;
-        }
+        return o;
     }
 
-    public void printUserOrderByOrderID(User u, int orderID) throws Exception
+    public void printOrderByOrderID(int orderID) throws Exception
     {
-        Order o = this.getUserOrderByOrderID(u, orderID);
+        Order o = this.getOrderByOrderID(orderID);
         if(o != null)
         {
             o.print();
         }
         else
         {
-            System.out.println("There is no other with id " + orderID + " in " + u.getUsername() + " orders history!");
+            System.out.println("There is no other with id " + orderID + " in orders history!");
         }
     }
 
@@ -156,30 +149,23 @@ public class Staff extends User {
         System.out.println("***********************************************************");
     }
 
-    public ReceiveNote getUserReceiveNoteByID(User u, int receiveNoteID) throws Exception
+    public ReceiveNote getReceiveNoteByID(int receiveNoteID) throws Exception
     {
         ReceiveNoteDB receivenotedb = new ReceiveNoteDB();
         ReceiveNote rn = receivenotedb.getByReceiveNoteID(receiveNoteID);
-        if(rn.getUser().equals(u))
-        {
-            return rn;
-        }
-        else
-        {
-            return null;
-        }
+        return rn;
     }
 
-    public void printUserReceiveNoteByID(User u, int receiveNoteID) throws Exception
+    public void printReceiveNoteByID(int receiveNoteID) throws Exception
     {
-        ReceiveNote rn = this.getUserReceiveNoteByID(u, receiveNoteID);
+        ReceiveNote rn = this.getReceiveNoteByID(receiveNoteID);
         if(rn != null)
         {
             rn.print();
         }
         else
         {
-            System.out.println("There is no receive note with id " + receiveNoteID + " in " + u.getUsername() + " receive notes history!");
+            System.out.println("There is no receive note with id " + receiveNoteID + " in receive notes history!");
         }
     }
 
@@ -208,16 +194,6 @@ public class Staff extends User {
     public void printAllMyReceiveNotes() throws Exception
     {
         this.printAllReceiveNotesOfUser(this);
-    }
-
-    public ReceiveNote getMyReceiveNoteByID(int receiveNoteID) throws Exception
-    {
-        return this.getUserReceiveNoteByID(this, receiveNoteID);
-    }
-
-    public void printMyReceiveNoteByID(int receiveNoteID) throws Exception
-    {
-        this.printUserReceiveNoteByID(this, receiveNoteID);
     }
 
     public ArrayList<ReceiveNote> getAllReceiveNotesOfProduct(Product p) throws Exception

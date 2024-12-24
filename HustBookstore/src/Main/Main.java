@@ -20,7 +20,7 @@ import Users.User;
 import Order.Order;
 
 public class Main {
-	private static final Boolean FIRST_RUN = false;
+	private static final Boolean FIRST_RUN = true;
 
 	private static UserDB userdb = new UserDB();
 	private static Store store = new Store();
@@ -196,5 +196,10 @@ public class Main {
 		staff2.addProductToStore(toy4, 1, 10);
 
 		Admin admin1 = generateAdmin("Admin", "Admin");
+		System.out.println(customer1.getRole());
+		System.out.println(customer2.getRole());
+		System.out.println(staff1.getRole());
+		System.out.println(staff2.getRole());
+		System.out.println(admin1.getRole());
 	}
 }

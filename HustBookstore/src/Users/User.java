@@ -21,7 +21,7 @@ public abstract class User implements Serializable {
 	private String username;
 	private String password;
 	private String role;
-	public User(String username, String password, String role) throws Exception {
+	public User(String username, String password) throws Exception {
 		UserDB userdb = new UserDB();
         ArrayList<User> alluser = userdb.getAllUsers();
         for(User u : alluser) {
@@ -30,7 +30,7 @@ public abstract class User implements Serializable {
         this.userID = ++User.idCounter;
 		this.username = username;
 		this.password = password;
-		this.role = role;
+		this.role = this.getClass().getSimpleName();
 		userdb.update(this);
 	}
     public int getUserID() {
