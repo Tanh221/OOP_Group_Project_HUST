@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import model.Databases.UserDB;
 import model.Products.Book;
 import model.Products.Product;
+import model.Products.Stationary;
 import model.Products.Toy;
 import model.Store.Store;
 import model.Users.Admin;
@@ -146,8 +147,8 @@ public class Main extends Application {
         Admin test = new Admin("1","1","0",date,0);
 
 
-        Book book1 = new Book("Harry Potter and BCM", 1.0d, "The Adventure of Harry Potter and BCM", "BCM", 5);
-        Book book2 = new Book("Harry Potter and PDD", 100.0d, "The Adventure of Harry Potter and PDD", "PDD", 200);
+        Book book1 = new Book("Harry Potter and BCM", 1.0d, "The Adventure of Harry Potter and BCM", "BCM", "Minh",123);
+        Book book2 = new Book("Harry Potter and PDD", 100.0d, "The Adventure of Harry Potter and PDD", "PDD", "Minh",123);
 
         staff1.addProductToStore(book1, 10, 4.0); // thêm 10 cuốn sách book1 vào store với giá nhập là 4.0
         staff1.addProductToStore(book1, 20, 6.0); // tiếp tục thêm 20 cuốn sách book1 vào store với giá nhập là 6.0
@@ -162,7 +163,9 @@ public class Main extends Application {
         staff1.addProductToStore(toy3, 100, 1.2); // thêm 100 toy3 vào store với giá nhập là 1.2
 
         Toy toy4 = new Toy("Rong trang mat xanh", 100d, "Sieu khoe", "Yugioh");
+        Stationary stationary1 = new Stationary("But bi",1.24,"Xin","Thien Ly","But");
         staff2.addProductToStore(toy4, 1, 10);
+        staff2.addProductToStore(stationary1,1,0.24);
     }
 
 

@@ -5,14 +5,16 @@ import model.Databases.ProductDB;
 public class Book extends Product {
 	
     private static final long serialVersionUID = 1L;
+    private String publisher;
 	private String author;
-    private int numberOfPages;
+    private int ISBN;
     private String type = "Book";
 
-    public Book(String name, double price, String description, String author, int numberOfPages) throws Exception {
+    public Book(String name, double price, String description,String publisher, String author, int ISBN) throws Exception {
         super(name, price, description);
+        this.publisher = publisher;
         this.author = author != null ? author : "";
-        this.numberOfPages = Math.max(0, numberOfPages);
+        this.ISBN = ISBN;
         ProductDB productdb = new ProductDB();
         productdb.update(this);
     }
@@ -22,9 +24,10 @@ public class Book extends Product {
         return "Book [" + this.getProductID() + "] :\n" + 
                 "Name: " + this.getName() + '\n' + 
                 "Price: " + this.getPrice() + '\n' + 
-                "Description: " + this.getDescription() + '\n' + 
+                "Description: " + this.getDescription() + '\n' +
+                "Publisher: " + this.getPublisher() + '\n'+
                 "Author: " + this.getAuthor() + '\n' + 
-                "Number Of Pages: " + this.getNumberOfPages()
+                "ISBN " + this.getISBN()
                 ;
     }
 
@@ -38,15 +41,6 @@ public class Book extends Product {
         productdb.update(this);
     }
 
-    public int getNumberOfPages() {
-        return this.numberOfPages;
-    }
-
-    public void setNumberOfPages(int numberOfPages) throws Exception {
-        this.numberOfPages = numberOfPages;
-        ProductDB productdb = new ProductDB();
-        productdb.update(this);
-    }
 
     public String getType() {
         return type;
@@ -56,17 +50,20 @@ public class Book extends Product {
         this.type = type;
     }
 
-    // @Override
-    // public boolean equals(Object otherobj) {
-    //     if (this == otherobj) return true; // the same reference
-    //     if (otherobj == null || getClass() != otherobj.getClass()) return false; // null or different class
-    //     Book otherbook = (Book) otherobj; //
-    //     return this.getProductID() == otherbook.getProductID() && 
-	// 			this.getName().equals(otherbook.getName()) && 
-	// 			this.getPrice() == otherbook.getPrice() && 
-	// 			this.getDescription().equals(otherbook.getDescription()) && 
-    //             this.getAuthor().equals(otherbook.getAuthor()) && 
-    //             this.getNumberOfPages() == otherbook.getNumberOfPages()
-    //             ;
-    // }
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public int getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(int ISBN) {
+        this.ISBN = ISBN;
+    }
+
 }

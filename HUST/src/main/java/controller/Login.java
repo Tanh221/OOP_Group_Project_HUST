@@ -31,7 +31,9 @@ public class Login {
     public static Staff staff;
     public static Admin admin;
     public static Customer customer;
+
     Stage dialogStage = new Stage();
+
     Scene scene;
 
     public void handleLoginButton(ActionEvent event) throws Exception {
@@ -61,14 +63,15 @@ public class Login {
                         dialogStage.setScene(scene);
                         dialogStage.show();
                 }
-                        else {
-                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/user/Dashboard.fxml"));
-                            Parent root = fxmlLoader.load();
-                            dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                            scene = new Scene(root);
-                            dialogStage.setScene(scene);
-                            dialogStage.show();
-                        }
+                else {
+                    customer = (Customer) user;
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/user/Dashboard.fxml"));
+                    Parent root = fxmlLoader.load();
+                    dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    scene = new Scene(root);
+                    dialogStage.setScene(scene);
+                    dialogStage.show();
+                }
                     }catch (Exception e) {
                          System.out.println(e);
                     }

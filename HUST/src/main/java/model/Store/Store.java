@@ -1,9 +1,6 @@
 package model.Store;
 
-import model.Products.Book;
-import model.Products.Product;
-import model.Products.ProductInfo;
-import model.Products.Toy;
+import model.Products.*;
 import model.exception.DatabaseNotAvailableException;
 import model.exception.StoreNotAvailableException;
 
@@ -314,6 +311,55 @@ public class Store {
             System.out.println("Successfully updated quantity of " + " [" + p.getClass() + "] " + oldQuantity + " to " + newQuantity + "!");
         }
     }
+
+    public void updatePublisherOfBook(Book b, String newPublisher) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(b);
+        if(id == -1)
+        {
+            System.out.println("[" + b.getClass() + "] " + b.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductInfo pq = this.itemsInStore.get(id);
+            String oldAuthor = ((Book)(pq.getProduct())).getAuthor();
+            ((Book)(pq.getProduct())).setPublisher(newPublisher);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated author of " + " [" + b.getClass() + "] " + oldAuthor + " to " + newPublisher + "!");
+        }
+    }
+
+    public void updateIBMSOfBook(Book b, int newIBMS) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(b);
+        if(id == -1)
+        {
+            System.out.println("[" + b.getClass() + "] " + b.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductInfo pq = this.itemsInStore.get(id);
+            String oldAuthor = ((Book)(pq.getProduct())).getAuthor();
+            ((Book)(pq.getProduct())).setISBN(newIBMS);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated author of " + " [" + b.getClass() + "] " + oldAuthor + " to " + newIBMS + "!");
+        }
+    }
+
     public void updateAuthorOfBook(Book b, String newAuthor) throws Exception
     {
         if(!this.avail)
@@ -358,6 +404,52 @@ public class Store {
             this.itemsInStore.set(id, pq);
             this.save();
             System.out.println("Successfully updated brand of " + " [" + t.getClass() + "] " + oldBrand + " to " + newBrand + "!");
+        }
+    }
+    public void updateBrandOfStationary(Stationary s, String newBrand) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(s);
+        if(id == -1)
+        {
+            System.out.println("[" + s.getClass() + "] " + s.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductInfo pq = this.itemsInStore.get(id);
+            String oldBrand = ((Stationary)(pq.getProduct())).getBrand();
+            ((Stationary)(pq.getProduct())).setBrand(newBrand);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated brand of " + " [" + s.getClass() + "] " + oldBrand + " to " + newBrand + "!");
+        }
+    }
+    public void updateStationaryTypeOfStationary(Stationary s, String newBrand) throws Exception
+    {
+        if(!this.avail)
+        {
+            throw new StoreNotAvailableException(ANSI_RED + "The Store is not available" + ANSI_RESET);
+        }
+        this.read();
+        // remove {quantity} product p from Store
+        int id = this.indexOf(s);
+        if(id == -1)
+        {
+            System.out.println("[" + s.getClass() + "] " + s.getName() + " is not in the Store!");
+        }
+        else
+        {
+            ProductInfo pq = this.itemsInStore.get(id);
+            String oldBrand = ((Stationary)(pq.getProduct())).getBrand();
+            ((Stationary)(pq.getProduct())).setStationaryType(newBrand);
+            this.itemsInStore.set(id, pq);
+            this.save();
+            System.out.println("Successfully updated brand of " + " [" + s.getClass() + "] " + oldBrand + " to " + newBrand + "!");
         }
     }
     public int indexOf(Product p) throws Exception

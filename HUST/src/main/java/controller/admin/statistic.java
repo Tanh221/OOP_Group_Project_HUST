@@ -53,8 +53,6 @@ public class statistic implements Initializable {
         dialogStage.show();
     }
 
-
-
     public void handleEmployeeButton(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/employeeTable/employee.fxml"));
         Parent root = fxmlLoader.load();

@@ -16,7 +16,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
@@ -24,19 +23,19 @@ import javafx.util.converter.IntegerStringConverter;
 import model.Products.Book;
 import model.Products.Product;
 import model.Products.ProductInfo;
+import model.Products.Toy;
 import model.Store.Store;
-import model.Users.Staff;
-
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class storage implements Initializable {
     Stage dialogStage = new Stage();
     Scene scene;
+
+    public static Product editable;
 
     private static Store store = new Store();
     ObservableList<ProductInfo> productObservableList = FXCollections.observableArrayList();
@@ -118,7 +117,6 @@ public class storage implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        productObservableList.clear();
         table.refresh();
         editData();
 
@@ -131,12 +129,6 @@ public class storage implements Initializable {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-
-//        id.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        price.setCellValueFactory(new PropertyValueFactory<>("price"));
-//        quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-//        type.setCellValueFactory(new PropertyValueFactory<>("type"));
 
         id.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getProduct().getProductID()).asObject());
         name.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProduct().getName()));
@@ -155,8 +147,8 @@ public class storage implements Initializable {
                     String keyword = newValue.toLowerCase();
 
                     try {
-                        System.out.println(keyword);
-                        System.out.println(String.valueOf(product.getProduct().getName()));
+//                        System.out.println(keyword);
+//                        System.out.println(String.valueOf(product.getProduct().getName()));
                         return String.valueOf(product.getProduct().getProductID()).contains(keyword)
                                 || product.getProduct().getName().toLowerCase().contains(keyword)
                                 || product.getProduct().getType().toLowerCase().contains(keyword)
@@ -233,12 +225,49 @@ public class storage implements Initializable {
     }
 
     @FXML
+    private void handlEditButton(ActionEvent event) throws IOException {
+        TableView.TableViewSelectionModel<ProductInfo> selectionModel = table.getSelectionModel();
+        ObservableList<ProductInfo> selectedItems = selectionModel.getSelectedItems();
+
+        for (ProductInfo x : selectedItems){
+            if(x.getProduct() instanceof Book){
+                editable = x.getProduct();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storageTable/BookEdit.fxml"));
+                Parent root = fxmlLoader.load();
+                dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                dialogStage.setScene(scene);
+                dialogStage.show();
+            }
+            else if (x.getProduct() instanceof Toy){
+                editable = x.getProduct();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storageTable/ToyEdit.fxml"));
+                Parent root = fxmlLoader.load();
+                dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                dialogStage.setScene(scene);
+                dialogStage.show();
+            }
+            else {
+                editable = x.getProduct();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/controller/admin/storageTable/StationaryEdit.fxml"));
+                Parent root = fxmlLoader.load();
+                dialogStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                scene = new Scene(root);
+                dialogStage.setScene(scene);
+                dialogStage.show();
+            }
+        }
+    }
+
+    @FXML
     private void handleDeleteButton(ActionEvent event) {
 
         TableView.TableViewSelectionModel<ProductInfo> selectionModel = table.getSelectionModel();
         ObservableList<ProductInfo> selectedItems = selectionModel.getSelectedItems();
 
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+
         confirmationAlert.setTitle("Confirm Deletion");
         confirmationAlert.setHeaderText("Are you sure you want to delete the selected product?");
 
@@ -248,7 +277,7 @@ public class storage implements Initializable {
                 for (ProductInfo x : selectedItems) {
                     try {
                         Login.admin.removeProductFromStore(x.getProduct(), x.getQuantity());
-//                        store.removeProduct(x.getProduct(), x.getQuantity());
+                        store.removeProduct(x.getProduct(), x.getQuantity());
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

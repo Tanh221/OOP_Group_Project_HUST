@@ -6,6 +6,7 @@ import model.Databases.UserDB;
 import model.Order.Order;
 import model.Products.Book;
 import model.Products.Product;
+import model.Products.Stationary;
 import model.Products.Toy;
 import model.ReceiveNote.ReceiveNote;
 import model.Store.Store;
@@ -100,9 +101,29 @@ public class Staff extends User {
         s.updateAuthorOfBook(b, newAuthor);
     }
 
+    public void updatePublisherOfBook(Book b, String newPublisher) throws Exception {
+        Store s = new Store();
+        s.updatePublisherOfBook(b, newPublisher);
+    }
+
+    public void updateIBMSOfBook(Book b, int newIBMS) throws Exception {
+        Store s = new Store();
+        s.updateIBMSOfBook(b, newIBMS);
+    }
+
     public void updateBrandOfToy(Toy t, String newBrand) throws Exception {
         Store s = new Store();
         s.updateBrandOfToy(t, newBrand);
+    }
+
+    public void updateBrandOfStationary(Stationary t, String newBrand) throws Exception {
+        Store s = new Store();
+        s.updateBrandOfStationary(t, newBrand);
+    }
+
+    public void updateTypeOfStationary(Stationary t, String newBrand) throws Exception {
+        Store s = new Store();
+        s.updateStationaryTypeOfStationary(t, newBrand);
     }
 
     public ArrayList<Order> getAllOrdersOfUser(User u) throws Exception {
