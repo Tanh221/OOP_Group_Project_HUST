@@ -1,6 +1,7 @@
 package Main;
 
 import java.io.*;
+import java.time.LocalDate;
 
 import Cart.Cart;
 import Store.Store;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import Products.Product;
 import Products.Book;
 import Products.Toy;
+import Report.Report;
 import Products.ProductInfo;
 import Users.Customer;
 import Users.Staff;
@@ -20,7 +22,7 @@ import Users.User;
 import Order.Order;
 
 public class Main {
-	private static final Boolean FIRST_RUN = true;
+	private static final Boolean FIRST_RUN = false;
 
 	private static UserDB userdb = new UserDB();
 	private static Store store = new Store();
@@ -149,6 +151,14 @@ public class Main {
 			admin1.changeUserUsername(customer1, "New name, yay");
 			System.out.println(o.getDetails()); // order cũng cập nhật thông tin theo user
 			customer1.printAllMyOrders(); // order cũng cập nhật thông tin theo user
+
+
+
+
+			LocalDate startDate = LocalDate.parse("2024-12-24");
+			LocalDate endDate = LocalDate.parse("2024-12-25");
+			Report r = new Report(startDate, endDate);
+			System.out.println("" + r.getRevenue() + " " + r.getCosts() + " " + r.getProfit());
 		}
 	}
 

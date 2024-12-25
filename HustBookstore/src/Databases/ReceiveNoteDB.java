@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.HashMap;
 
 import ReceiveNote.ReceiveNote;
@@ -298,6 +299,21 @@ public class ReceiveNoteDB {
         }
         this.read();
         return this.db;
+    }
+
+    public ArrayList<ReceiveNote> getByPeriod(LocalDate startDate, LocalDate endDate) throws Exception { // get all order created in [startDate, endDate]
+        if(!this.avail)
+        {
+            throw new DatabaseNotAvailableException(ANSI_RED + "The database is not available" + ANSI_RESET);
+        }
+        this.read();
+        ArrayList<ReceiveNote> res = new ArrayList<ReceiveNote>();
+        for(ReceiveNote e : this.db) {
+            if((e.getReceiveNoteDate().isEqual(startDate) || e.getReceiveNoteDate().isAfter(startDate)) && (e.getReceiveNoteDate().isEqual(endDate) || e.getReceiveNoteDate().isBefore(endDate))) {
+                res.add(e);
+            }
+        }
+        return res;
     }
 
     public boolean isEmpty() throws Exception
